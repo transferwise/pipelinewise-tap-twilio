@@ -3,58 +3,123 @@
   "additionalProperties": false,
   "properties": {
     "friendly_name": {
-      "type": ["null", "string"]
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "phone_number": {
-      "type": ["null", "string"]
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "lata": {
-      "type": ["null", "string"]
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "rate_center": {
-      "type": ["null", "string"]
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "latitude": {
-      "type": ["null", "number"],
-      "multipleOf": 1e-8
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number",
+          "multipleOf": 1e-6
+        },
+        {
+          "type": "string"
+        }
+      ]
     },
     "longitude": {
-      "type": ["null", "number"],
-      "multipleOf": 1e-8
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number",
+          "multipleOf": 1e-6
+        },
+        {
+          "type": "string"
+        }
+      ]
     },
-    "lacality": {
-      "type": ["null", "string"]
+    "locality": {
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "region": {
-      "type": ["null", "string"]
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "postal_code": {
-      "type": ["null", "string"]
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "iso_country": {
-      "type": ["null", "string"]
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "address_requirements": {
-      "type": ["null", "string"]
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "beta": {
-      "type": ["null", "boolean"]
+      "type": [
+        "null",
+        "boolean"
+      ]
     },
     "capabilities": {
-      "type": ["null", "object"],
+      "type": [
+        "null",
+        "object"
+      ],
       "additionalProperties": false,
       "properties": {
         "voice": {
-          "type": ["null", "boolean"]
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
-        "sms": {
-          "type": ["null", "boolean"]
+        "SMS": {
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
-        "mms": {
-          "type": ["null", "boolean"]
+        "MMS": {
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
         "fax": {
-          "type": ["null", "boolean"]
+          "type": [
+            "null",
+            "boolean"
+          ]
         }
       }
     }

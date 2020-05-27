@@ -21,22 +21,22 @@ STREAMS = {
         'path': 'Accounts.json',
         'data_key': 'accounts',
         'key_properties': ['sid'],
-        'replication_method': 'INCREMENTAL', # Fetch ALL, filter results
+        'replication_method': 'FULL_TABLE', # Fetch ALL, filter results
         'replication_keys': ['date_updated'],
         'params': {},
         'pagingation': 'root',
         'children': {
-            # Reference: https://support.twilio.com/hc/en-us/articles/360025294494-Check-Your-Twilio-Project-Balance
-            'account_balance': {
-                'api_url': 'https://api.twilio.com',
-                'api_version': '2010-04-01',
-                'path': 'Accounts/{ParentId}/Balance.json',
-                'data_key': 'account_balance',
-                'key_properties': ['account_sid'],
-                'replication_method': 'FULL_TABLE',
-                'params': {},
-                'pagingation': 'none'
-            },
+            # # Reference: https://support.twilio.com/hc/en-us/articles/360025294494-Check-Your-Twilio-Project-Balance
+            # 'account_balance': {
+            #     'api_url': 'https://api.twilio.com',
+            #     'api_version': '2010-04-01',
+            #     'path': 'Accounts/{ParentId}/Balance.json',
+            #     'data_key': 'account_balance',
+            #     'key_properties': ['account_sid'],
+            #     'replication_method': 'FULL_TABLE',
+            #     'params': {},
+            #     'pagingation': 'none'
+            # },
             # Reference: https://www.twilio.com/docs/usage/api/address#read-multiple-address-resources
             'addresses': {
                 'api_url': 'https://api.twilio.com',
@@ -53,7 +53,7 @@ STREAMS = {
                     'dependent_phone_numbers': {
                         'api_url': 'https://api.twilio.com',
                         'api_version': '2010-04-01',
-                        'path': 'Accounts/{AccountSid}/Addresses/{ParentId}/DependentPhoneNumbers.json',
+                        'path': 'Accounts/{ParentId}/Addresses/{ParentId}/DependentPhoneNumbers.json',
                         'data_key': 'dependent_phone_numbers',
                         'key_properties': ['sid'],
                         'replication_method': 'FULL_TABLE', # ALL for parent Address
@@ -130,7 +130,7 @@ STREAMS = {
                 'api_url': 'https://api.twilio.com',
                 'api_version': '2010-04-01',
                 'path': 'Accounts/{ParentId}/IncomingPhoneNumbers.json',
-                'data_key': 'countries',
+                'data_key': 'incoming_phone_numbers',
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL', # Fetch ALL, filter results
                 'replication_keys': ['date_updated'],
@@ -170,7 +170,7 @@ STREAMS = {
             'conferences': {
                 'api_url': 'https://api.twilio.com',
                 'api_version': '2010-04-01',
-                'path': 'Accounts/{AccountSid}/Conferences.json',
+                'path': 'Accounts/{ParentId}/Conferences.json',
                 'data_key': 'conferences',
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL', # Filter query
@@ -184,7 +184,7 @@ STREAMS = {
                     'conference_participants': {
                         'api_url': 'https://api.twilio.com',
                         'api_version': '2010-04-01',
-                        'path': 'Accounts/{AccountSid}/Conferences/{ParentId}/Participants.json',
+                        'path': 'Accounts/{ParentId}/Conferences/{ParentId}/Participants.json',
                         'data_key': 'participants',
                         'key_properties': ['uri'],
                         'replication_method': 'FULL_TABLE', # ALL for parent Conference
@@ -226,7 +226,7 @@ STREAMS = {
             'transcriptions': {
                 'api_url': 'https://api.twilio.com',
                 'api_version': '2010-04-01',
-                'path': 'Accounts/{AccountSid}/Transcriptions.json',
+                'path': 'Accounts/{ParentId}/Transcriptions.json',
                 'data_key': 'transcriptions',
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL', # Fetch ALL, filter results
@@ -239,7 +239,7 @@ STREAMS = {
             'queues': {
                 'api_url': 'https://api.twilio.com',
                 'api_version': '2010-04-01',
-                'path': 'Accounts/{AccountSid}/Queues.json',
+                'path': 'Accounts/{ParentId}/Queues.json',
                 'data_key': 'queues',
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL', # Fetch ALL, filter results
@@ -252,7 +252,7 @@ STREAMS = {
                 #     'queue_members': {
                 #         'api_url': 'https://api.twilio.com',
                 #         'api_version': '2010-04-01',
-                #         'path': 'Accounts/{AccountSid}/Queues/{ParentId}/Members.json',
+                #         'path': 'Accounts/{ParentId}/Queues/{ParentId}/Members.json',
                 #         'data_key': 'members',
                 #         'key_properties': ['sid'],
                 #         'replication_method': 'FULL_TABLE', # ALL for parent Queue
@@ -323,7 +323,7 @@ STREAMS = {
 
     # Reference: https://www.twilio.com/docs/usage/monitor-alert#read-multiple-alert-resources
     'alerts': {
-        'api_url': 'https://messaging.twilio.com',
+        'api_url': 'https://monitor.twilio.com',
         'api_version': 'v1',
         'path': 'Alerts',
         'data_key': 'alerts',
@@ -350,6 +350,7 @@ def flatten_streams():
             'replication_keys': endpoint_config.get('replication_keys')
         }
         # Loop through children
+        # TODO: Add parent stream to streams
         children = endpoint_config.get('children')
         if children:
             for child_stream_name, child_endpoint_config in children.items():

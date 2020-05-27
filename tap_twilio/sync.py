@@ -8,6 +8,7 @@ from tap_twilio.streams import STREAMS
 
 LOGGER = singer.get_logger()
 
+
 def write_schema(catalog, stream_name):
     stream = catalog.get_stream(stream_name)
     schema = stream.schema.to_dict()
@@ -123,7 +124,8 @@ def sync_endpoint(
         lock_period_days=None,
         date_window_days=None,
         parent=None,
-        parent_id=None):
+        parent_id=None,
+        account_sid=None):
 
     static_params = endpoint_config.get('params', {})
     bookmark_query_field_from = endpoint_config.get('bookmark_query_field_from')
@@ -131,12 +133,8 @@ def sync_endpoint(
     data_key = endpoint_config.get('data_key', 'data')
     id_fields = endpoint_config.get('key_properties')
     lock_period_ind = endpoint_config.get('lock_period_ind', False)
-    api_key = config.get('api_key')
 
     # Get the latest bookmark for the stream and set the last_integer/datetime
-    last_datetime = None
-    max_bookmark_value = None
-
     last_datetime = get_bookmark(state, stream_name, start_date)
     max_bookmark_value = last_datetime
     LOGGER.info('stream: {}, bookmark_field: {}, last_datetime: {}'.format(
@@ -150,17 +148,15 @@ def sync_endpoint(
         # lock_period_days from config, default = 60; passed to function from sync
         if lock_period_ind:
             if not lock_period_days:
-                lock_period_days = 60
+                lock_period_days = 14
         else:
             lock_period_days = 0
 
         # date_window_days: Number of days in each date window
         # date_window_days from config, default = 30; passed to function from sync
-        if stream_name == 'transaction_history':
-            if date_window_days >= 28:
-                date_window_days = 28
-        elif not date_window_days:
-            date_window_days = 30
+        if stream_name == 'alerts':
+            if date_window_days >= 30:
+                date_window_days = 30
 
         # Set start window
         last_dttm = strptime_to_utc(last_datetime)
@@ -179,7 +175,6 @@ def sync_endpoint(
         date_window_days = math.ceil(diff_sec / (3600 * 24)) # round-up difference to days
 
     endpoint_total = 0
-    total_records = 0
 
     while start_window < now_datetime:
         LOGGER.info('START Sync for Stream: {}{}'.format(
@@ -195,7 +190,12 @@ def sync_endpoint(
 
         # pagination: loop thru all pages of data using next (if not None)
         page = 1
-        next_url = '{}/{}'.format(client.base_url, path)
+        api_version = endpoint_config.get('api_version')
+        if api_version in path:
+            next_url = '{}{}'.format(endpoint_config.get('api_url'), path)
+        else:
+            next_url = '{}/{}/{}'.format(endpoint_config.get('api_url'), api_version, path)
+
         offset = 0
         limit = 500 # Default limit for Twilio API, unable to change this
         total_records = 0
@@ -205,7 +205,6 @@ def sync_endpoint(
             # querystring: Squash query params into string
             querystring = None
             if page == 1 and not params == {}:
-                params['page'] = page
                 querystring = '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
                 # Replace <parent_id> in child stream params
                 if parent_id:
@@ -214,11 +213,10 @@ def sync_endpoint(
                 params = None
             LOGGER.info('URL for Stream {}: {}{}'.format(
                 stream_name,
-                next_url.replace(api_key, '${api_key}'),
+                next_url,
                 '?{}'.format(querystring) if params else ''))
 
             # API request data
-            data = {}
             data = client.get(
                 url=next_url,
                 path=path,
@@ -277,18 +275,19 @@ def sync_endpoint(
                         raise RuntimeError
 
             # Process records and get the max_bookmark_value and record_count for the set of records
-            max_bookmark_value, record_count = process_records(
-                catalog=catalog,
-                stream_name=stream_name,
-                records=transformed_data,
-                time_extracted=time_extracted,
-                bookmark_field=bookmark_field,
-                max_bookmark_value=max_bookmark_value,
-                last_datetime=last_datetime,
-                parent=parent,
-                parent_id=parent_id)
-            LOGGER.info('Stream {}, batch processed {} records'.format(
-                stream_name, record_count))
+            if stream_name in selected_streams:
+                max_bookmark_value, record_count = process_records(
+                    catalog=catalog,
+                    stream_name=stream_name,
+                    records=transformed_data,
+                    time_extracted=time_extracted,
+                    bookmark_field=bookmark_field,
+                    max_bookmark_value=max_bookmark_value,
+                    last_datetime=last_datetime,
+                    parent=parent,
+                    parent_id=parent_id)
+                LOGGER.info('Stream {}, batch processed {} records'.format(
+                    stream_name, record_count))
 
             # Loop thru parent batch records for each children objects (if should stream)
             children = endpoint_config.get('children')
@@ -310,28 +309,34 @@ def sync_endpoint(
                             parent_id = record.get(parent_id_field)
 
                             # sync_endpoint for child
-                            LOGGER.info(
-                                'START Sync for Stream: {}, parent_stream: {}, parent_id: {}'\
-                                    .format(child_stream_name, stream_name, parent_id))
-                            child_path = child_endpoint_config.get(
-                                'path', child_stream_name).format(str(parent_id))
+                            LOGGER.info('START Sync for Stream: {}, parent_stream: {}, parent_id: {}'
+                                        .format(child_stream_name, stream_name, parent_id))
+                            # TODO: Document subresource URIs
+                            child_path = record.get('_subresource_uris', {}).get(child_stream_name, None)
                             child_bookmark_field = next(iter(child_endpoint_config.get(
                                 'replication_keys', [])), None)
-                            child_total_records = sync_endpoint(
-                                client=client,
-                                config=config,
-                                catalog=catalog,
-                                state=state,
-                                start_date=start_date,
-                                stream_name=child_stream_name,
-                                path=child_path,
-                                endpoint_config=child_endpoint_config,
-                                bookmark_field=child_bookmark_field,
-                                selected_streams=selected_streams,
-                                lock_period_days=lock_period_days,
-                                date_window_days=date_window_days,
-                                parent=child_endpoint_config.get('parent'),
-                                parent_id=parent_id)
+
+                            if child_path:
+                                child_total_records = sync_endpoint(
+                                    client=client,
+                                    config=config,
+                                    catalog=catalog,
+                                    state=state,
+                                    start_date=start_date,
+                                    stream_name=child_stream_name,
+                                    path=child_path,
+                                    endpoint_config=child_endpoint_config,
+                                    bookmark_field=child_bookmark_field,
+                                    selected_streams=selected_streams,
+                                    lock_period_days=lock_period_days,
+                                    date_window_days=date_window_days,
+                                    parent=child_endpoint_config.get('parent'),
+                                    parent_id=parent_id,
+                                    account_sid=account_sid)
+                            else:
+                                LOGGER.info('No child stream {} for parent stream {} in subresource uris'
+                                            .format(child_stream_name, stream_name))
+                                child_total_records = 0
                             LOGGER.info(
                                 'FINISHED Sync for Stream: {}, parent_id: {}, total_records: {}'\
                                     .format(child_stream_name, parent_id, child_total_records))
@@ -412,7 +417,9 @@ def sync(client, config, catalog, state):
 
     # Loop through endpoints in selected_streams
     for stream_name, endpoint_config in STREAMS.items():
-        if stream_name in selected_streams:
+        selected_streams_with_parents = selected_streams
+        selected_streams_with_parents.append('accounts')
+        if stream_name in selected_streams_with_parents:
             LOGGER.info('START Syncing: {}'.format(stream_name))
             write_schema(catalog, stream_name)
             update_currently_syncing(state, stream_name)

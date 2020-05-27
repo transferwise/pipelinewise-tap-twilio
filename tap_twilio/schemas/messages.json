@@ -73,6 +73,27 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": [
+            "null",
+            "object"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "feedback": {
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            "media": {
+              "type": [
+                "null",
+                "string"
+              ]
+            }
+          }
         }
       ]
     },

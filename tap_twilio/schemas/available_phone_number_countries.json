@@ -33,6 +33,21 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": ["null", "object"],
+          "additionalProperties": false,
+          "properties": {
+            "local": {
+              "type": ["null", "string"]
+            },
+            "mobile": {
+              "type": ["null", "string"]
+            },
+            "toll_free": {
+              "type": ["null", "string"]
+            }
+          }
         }
       ]
     }
