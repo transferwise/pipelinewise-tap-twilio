@@ -1,13 +1,13 @@
 import backoff
 import requests
-from requests.exceptions import ConnectionError
-from singer import metrics, utils
 import singer
+from singer import metrics
 
 LOGGER = singer.get_logger()
 
 API_URL = 'https://api.twilio.com'
 API_VERSION = '2010-04-01'
+
 
 class Server5xxError(Exception):
     pass
@@ -20,13 +20,6 @@ class Server429Error(Exception):
 class TwilioError(Exception):
     pass
 
-
-class TwilioBadRequestError(TwilioError):
-    pass
-
-
-class TwilioUnauthorizedError(TwilioError):
-    pass
 
 class TwilioBadRequestError(TwilioError):
     pass
@@ -60,6 +53,7 @@ STATUS_EXCEPTION_MAPPING = {
 def get_exception_for_status(status):
     return STATUS_EXCEPTION_MAPPING.get(status, TwilioError)
 
+
 # Error message (example):
 # {
 #   "status": 400,
@@ -89,13 +83,12 @@ def raise_for_error(response):
                     status, message, error_code, more_info, error)
                 ex = get_exception_for_status(status)
                 raise ex(error_message)
-            else:
-                raise TwilioError(error)
+            raise TwilioError(error)
         except (ValueError, TypeError):
             raise TwilioError(error)
 
 
-class TwilioClient(object):
+class TwilioClient:
     def __init__(self,
                  account_sid,
                  auth_token,
@@ -115,6 +108,7 @@ class TwilioClient(object):
     def __exit__(self, exception_type, exception_value, traceback):
         self.__session.close()
 
+    # pylint: disable=inconsistent-return-statements
     @backoff.on_exception(backoff.expo,
                           Server5xxError,
                           max_tries=7,

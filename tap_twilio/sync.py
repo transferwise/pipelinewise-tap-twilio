@@ -1,10 +1,12 @@
-from datetime import timedelta
 import math
+from datetime import timedelta
+
 import singer
 from singer import metrics, metadata, Transformer, utils
 from singer.utils import strptime_to_utc, strftime
-from tap_twilio.transform import transform_json
+
 from tap_twilio.streams import STREAMS
+from tap_twilio.transform import transform_json
 
 LOGGER = singer.get_logger()
 
@@ -52,11 +54,12 @@ def write_bookmark(state, stream, value):
 
 def transform_datetime(this_dttm):
     with Transformer() as transformer:
+        # pylint: disable=protected-access
         new_dttm = transformer._transform_datetime(this_dttm)
     return new_dttm
 
 
-def process_records(catalog, #pylint: disable=too-many-branches
+def process_records(catalog,  # pylint: disable=too-many-branches
                     stream_name,
                     records,
                     time_extracted,
@@ -90,7 +93,8 @@ def process_records(catalog, #pylint: disable=too-many-branches
                 # Reset max_bookmark_value to new value if higher
                 if transformed_record.get(bookmark_field):
                     if max_bookmark_value is None or \
-                        transformed_record[bookmark_field] > transform_datetime(max_bookmark_value):
+                            transformed_record[bookmark_field] > \
+                            transform_datetime(max_bookmark_value):
                         max_bookmark_value = transformed_record[bookmark_field]
 
                 if bookmark_field and (bookmark_field in transformed_record):
@@ -100,7 +104,7 @@ def process_records(catalog, #pylint: disable=too-many-branches
                     if bookmark_dttm:
                         if bookmark_dttm >= last_dttm:
                             write_record(stream_name, transformed_record, \
-                                time_extracted=time_extracted)
+                                         time_extracted=time_extracted)
                             counter.increment()
                 else:
                     write_record(stream_name, transformed_record, time_extracted=time_extracted)
@@ -110,6 +114,7 @@ def process_records(catalog, #pylint: disable=too-many-branches
 
 
 # Sync a specific parent or child endpoint.
+# pylint: disable=too-many-statements,too-many-branches
 def sync_endpoint(
         client,
         config,
@@ -126,7 +131,6 @@ def sync_endpoint(
         parent=None,
         parent_id=None,
         account_sid=None):
-
     static_params = endpoint_config.get('params', {})
     bookmark_query_field_from = endpoint_config.get('bookmark_query_field_from')
     bookmark_query_field_to = endpoint_config.get('bookmark_query_field_to')
@@ -138,7 +142,7 @@ def sync_endpoint(
     last_datetime = get_bookmark(state, stream_name, start_date)
     max_bookmark_value = last_datetime
     LOGGER.info('stream: {}, bookmark_field: {}, last_datetime: {}'.format(
-         stream_name, bookmark_field, last_datetime))
+        stream_name, bookmark_field, last_datetime))
 
     # windowing: loop through date date_window_days date windows from last_datetime to now_datetime
     now_datetime = utils.now()
@@ -172,21 +176,22 @@ def sync_endpoint(
         start_window = strptime_to_utc(last_datetime)
         end_window = now_datetime
         diff_sec = (end_window - start_window).seconds
-        date_window_days = math.ceil(diff_sec / (3600 * 24)) # round-up difference to days
+        date_window_days = math.ceil(diff_sec / (3600 * 24))  # round-up difference to days
 
     endpoint_total = 0
 
+    # pylint: disable=too-many-nested-blocks
     while start_window < now_datetime:
         LOGGER.info('START Sync for Stream: {}{}'.format(
             stream_name,
             ', Date window from: {} to {}'.format(start_window, end_window) \
                 if bookmark_query_field_from else ''))
 
-        params = static_params # adds in endpoint specific, sort, filter params
+        params = static_params  # adds in endpoint specific, sort, filter params
 
         if bookmark_query_field_from and bookmark_query_field_to:
-            params[bookmark_query_field_from] = strftime(start_window)[:10] # truncate date
-            params[bookmark_query_field_to] = strftime(end_window)[:10] # truncate date
+            params[bookmark_query_field_from] = strftime(start_window)[:10]  # truncate date
+            params[bookmark_query_field_to] = strftime(end_window)[:10]  # truncate date
 
         # pagination: loop thru all pages of data using next (if not None)
         page = 1
@@ -197,7 +202,7 @@ def sync_endpoint(
             next_url = '{}/{}/{}'.format(endpoint_config.get('api_url'), api_version, path)
 
         offset = 0
-        limit = 500 # Default limit for Twilio API, unable to change this
+        limit = 500  # Default limit for Twilio API, unable to change this
         total_records = 0
 
         while next_url is not None:
@@ -227,7 +232,7 @@ def sync_endpoint(
             time_extracted = utils.now()
             if not data or data is None or data == {}:
                 total_records = 0
-                break # No data results
+                break  # No data results
 
             # Get pagination details
             pagination = data.get('meta', {}).get('pagination', {})
@@ -240,31 +245,31 @@ def sync_endpoint(
             # Transform data with transform_json from transform.py
             # The data_key identifies the array/list of records below the <root> element
             # LOGGER.info('data = {}'.format(data)) # TESTING, comment out
-            transformed_data = [] # initialize the record list
+            transformed_data = []  # initialize the record list
             data_list = []
             data_dict = {}
             if data_key in data:
                 if isinstance(data[data_key], list):
-                    transformed_data = transform_json(data, stream_name, data_key)
+                    transformed_data = transform_json(data, data_key)
                 elif isinstance(data[data_key], dict):
                     data_list.append(data[data_key])
                     data_dict[data_key] = data_list
-                    transformed_data = transform_json(data_dict, stream_name, data_key)
-            else: # data_key not in data
+                    transformed_data = transform_json(data_dict, data_key)
+            else:  # data_key not in data
                 if isinstance(data, list):
                     data_list = data
                     data_dict[data_key] = data_list
-                    transformed_data = transform_json(data_dict, stream_name, data_key)
+                    transformed_data = transform_json(data_dict, data_key)
                 elif isinstance(data, dict):
                     data_list.append(data)
                     data_dict[data_key] = data_list
-                    transformed_data = transform_json(data_dict, stream_name, data_key)
+                    transformed_data = transform_json(data_dict, data_key)
 
             # LOGGER.info('transformed_data = {}'.format(transformed_data)) # TESTING, comment out
             if not transformed_data or transformed_data is None:
                 LOGGER.info('No transformed data for data = {}'.format(data))
                 total_records = 0
-                break # No data results
+                break  # No data results
 
             # Verify key id_fields are present
             for record in transformed_data:
@@ -309,10 +314,16 @@ def sync_endpoint(
                             parent_id = record.get(parent_id_field)
 
                             # sync_endpoint for child
-                            LOGGER.info('START Sync for Stream: {}, parent_stream: {}, parent_id: {}'
-                                        .format(child_stream_name, stream_name, parent_id))
-                            # TODO: Document subresource URIs
-                            child_path = record.get('_subresource_uris', {}).get(child_stream_name, None)
+                            LOGGER.info(
+                                'START Sync for Stream: {}, parent_stream: {}, parent_id: {}'
+                                .format(child_stream_name, stream_name, parent_id))
+
+                            # If the results of the stream being synced has child streams,
+                            # their endpoints will be in the results,
+                            # this will grab the child path for the child stream we're syncing,
+                            # if we're syncing it. If it doesn't exist we just skip it below.
+                            child_path = record.get('_subresource_uris', {})\
+                                .get(child_stream_name, None)
                             child_bookmark_field = next(iter(child_endpoint_config.get(
                                 'replication_keys', [])), None)
 
@@ -334,11 +345,12 @@ def sync_endpoint(
                                     parent_id=parent_id,
                                     account_sid=account_sid)
                             else:
-                                LOGGER.info('No child stream {} for parent stream {} in subresource uris'
-                                            .format(child_stream_name, stream_name))
+                                LOGGER.info(
+                                    'No child stream {} for parent stream {} in subresource uris'
+                                    .format(child_stream_name, stream_name))
                                 child_total_records = 0
                             LOGGER.info(
-                                'FINISHED Sync for Stream: {}, parent_id: {}, total_records: {}'\
+                                'FINISHED Sync for Stream: {}, parent_id: {}, total_records: {}' \
                                     .format(child_stream_name, parent_id, child_total_records))
                             # End transformed data record loop
                         # End if child in selected streams
