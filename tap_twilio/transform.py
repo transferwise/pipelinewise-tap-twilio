@@ -8,8 +8,8 @@ def subresources_to_array(data_dict, data_key):
     i = 0
     for record in data_dict[data_key]:
         subresources = record.get('subresource_uris', None)
-        new_dict[data_key][i]['_subresource_uris'] = record.get('subresource_uris', None)
         if subresources:
+            new_dict[data_key][i]['_subresource_uris'] = record.get('subresource_uris')
             subresource_mappings = []
             for subresource_name, subresource_uri in subresources.items():
                 subresource_mappings.append(
