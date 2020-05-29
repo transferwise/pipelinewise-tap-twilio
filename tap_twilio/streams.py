@@ -339,7 +339,8 @@ def flatten_streams():
                 flat_streams[child_stream_name] = {
                     'key_properties': child_endpoint_config.get('key_properties'),
                     'replication_method': child_endpoint_config.get('replication_method'),
-                    'replication_keys': child_endpoint_config.get('replication_keys')
+                    'replication_keys': child_endpoint_config.get('replication_keys'),
+                    'parent_stream': stream_name
                 }
                 # Loop through grand-children
                 grandchildren = child_endpoint_config.get('children')
@@ -350,6 +351,7 @@ def flatten_streams():
                             'key_properties': grandchild_endpoint_config.get('key_properties'),
                             'replication_method': grandchild_endpoint_config.get(
                                 'replication_method'),
-                            'replication_keys': grandchild_endpoint_config.get('replication_keys')
+                            'replication_keys': grandchild_endpoint_config.get('replication_keys'),
+                            'parent_stream': child_stream_name
                         }
     return flat_streams

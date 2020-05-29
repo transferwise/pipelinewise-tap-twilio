@@ -5,7 +5,7 @@ import singer
 from singer import metrics, metadata, Transformer, utils
 from singer.utils import strptime_to_utc, strftime
 
-from tap_twilio.streams import STREAMS
+from tap_twilio.streams import STREAMS, flatten_streams
 from tap_twilio.transform import transform_json
 
 LOGGER = singer.get_logger()
@@ -293,6 +293,8 @@ def sync_endpoint(
                     parent_id=parent_id)
                 LOGGER.info('Stream {}, batch processed {} records'.format(
                     stream_name, record_count))
+            else:
+                record_count = 0
 
             # Loop thru parent batch records for each children objects (if should stream)
             children = endpoint_config.get('children')
@@ -424,14 +426,37 @@ def sync(client, config, catalog, state):
         selected_streams.append(stream.stream)
     LOGGER.info('selected_streams: {}'.format(selected_streams))
 
+    # Get lists of parent and child streams to sync (from streams.py and catalog)
+    # For children, ensure that dependent parent_stream is included
+    parent_streams = []
+    child_streams = []
+    # Get all streams (parent + child) from streams.py
+    flat_streams = flatten_streams()
+    # Loop thru all streams
+    for stream_name, stream_metadata in flat_streams.items():
+        # If stream has a parent_stream, then it is a child stream
+        parent_stream = stream_metadata.get('parent_stream')
+        # Append selected parent streams
+        if parent_stream not in selected_streams and stream_name in selected_streams:
+            parent_streams.append(parent_stream)
+            child_streams.append(stream_name)
+        # Append selected child streams
+        elif parent_stream and stream_name in selected_streams:
+            parent_streams.append(stream_name)
+            child_streams.append(stream_name)
+            # Append un-selected parent streams of selected children
+            if parent_stream not in selected_streams:
+                parent_streams.append(parent_stream)
+    LOGGER.info('Sync Parent Streams: {}'.format(parent_streams))
+    LOGGER.info('Sync Child Streams: {}'.format(child_streams))
+
     if not selected_streams or selected_streams == []:
         return
 
     # Loop through endpoints in selected_streams
     for stream_name, endpoint_config in STREAMS.items():
-        selected_streams_with_parents = selected_streams
-        selected_streams_with_parents.append('accounts')
-        if stream_name in selected_streams_with_parents:
+        required_streams = list(set(parent_streams + child_streams))
+        if stream_name in required_streams:
             LOGGER.info('START Syncing: {}'.format(stream_name))
             write_schema(catalog, stream_name)
             update_currently_syncing(state, stream_name)
