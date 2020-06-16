@@ -235,7 +235,7 @@ To set up authentication simply include your Twilio `account_sid` and `auth_toke
     - [singer-tools](https://github.com/singer-io/singer-tools)
     - [target-stitch](https://github.com/singer-io/target-stitch)
 
-3. Create your tap's `config.json` file. The `api_key` is available in the twilio Console UI (see **Authentication** above). The `date_window_days` is the integer number of days (between the from and to dates) for date-windowing through the date-filtered endpoints (default = 30). The `lock_period_days` is the latency look-back period for reports/performance endpoints. The `start_date` is the absolute beginning date from which incremental loading on the initial load will start.
+3. Create your tap's `config.json` file. The `api_key` is available in the twilio Console UI (see **Authentication** above). The `date_window_days` is the integer number of days (between the from and to dates) for date-windowing through the date-filtered endpoints (default = 30). The `start_date` is the absolute beginning date from which incremental loading on the initial load will start.
 
     ```json
         {

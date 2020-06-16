@@ -352,6 +352,7 @@ def flatten_streams():
                             'replication_method': grandchild_endpoint_config.get(
                                 'replication_method'),
                             'replication_keys': grandchild_endpoint_config.get('replication_keys'),
-                            'parent_stream': child_stream_name
+                            'parent_stream': child_stream_name,
+                            'grandparent_stream': stream_name
                         }
     return flat_streams

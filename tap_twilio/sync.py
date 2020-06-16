@@ -87,7 +87,6 @@ def process_records(catalog,  # pylint: disable=too-many-branches
                         stream_metadata)
                 except Exception as err:
                     LOGGER.error('Transformer Error: {}'.format(err))
-                    LOGGER.error('Stream: {}, record: {}'.format(stream_name, record))
                     raise err
 
                 # Reset max_bookmark_value to new value if higher
@@ -113,6 +112,51 @@ def process_records(catalog,  # pylint: disable=too-many-branches
         return max_bookmark_value, counter.value
 
 
+def get_dates(state, stream_name, start_date, bookmark_field, bookmark_query_field_from,
+              bookmark_query_field_to, date_window_days):
+    """
+    Given the state, stream, endpoint config, and start date, determine the date window for syncing
+    as well as the relevant dates and window day increments.
+    :param state: Tap sync state consisting of bookmarks, last synced stream, etc.
+    :param stream_name: Stream being synced
+    :param start_date: Tap config start date
+    :param bookmark_field: Field for the stream used as a bookmark
+    :param bookmark_query_field_from: field, if applicable, for windowing the stream request
+    :param bookmark_query_field_to: field, if applicable, for windowing the stream request
+    :param date_window_days: number of days to perform endpoint call for at a time, defaults to 30
+    :return:
+    """
+    # Get the latest bookmark for the stream and set the last_integer/datetime
+    last_datetime = get_bookmark(state, stream_name, start_date)
+    max_bookmark_value = last_datetime
+    LOGGER.info('stream: {}, bookmark_field: {}, last_datetime: {}'.format(
+        stream_name, bookmark_field, last_datetime))
+
+    # windowing: loop through date date_window_days date windows from last_datetime to now_datetime
+    now_datetime = utils.now()
+    if bookmark_query_field_from and bookmark_query_field_to:
+        # date_window_days: Number of days in each date window
+        # date_window_days from config, default = 30; passed to function from sync
+
+        # Set start window
+        last_dttm = strptime_to_utc(last_datetime)
+        start_window = now_datetime
+        if last_dttm < start_window:
+            start_window = last_dttm
+
+        # Set end window
+        end_window = start_window + timedelta(days=date_window_days)
+        if end_window > now_datetime:
+            end_window = now_datetime
+    else:
+        start_window = strptime_to_utc(last_datetime)
+        end_window = now_datetime
+        diff_sec = (end_window - start_window).seconds
+        date_window_days = math.ceil(diff_sec / (3600 * 24))  # round-up difference to days
+
+    return start_window, end_window, date_window_days, now_datetime, last_datetime, max_bookmark_value
+
+
 # Sync a specific parent or child endpoint.
 # pylint: disable=too-many-statements,too-many-branches
 def sync_endpoint(
@@ -126,7 +170,6 @@ def sync_endpoint(
         endpoint_config,
         bookmark_field,
         selected_streams=None,
-        lock_period_days=None,
         date_window_days=None,
         parent=None,
         parent_id=None,
@@ -136,47 +179,17 @@ def sync_endpoint(
     bookmark_query_field_to = endpoint_config.get('bookmark_query_field_to')
     data_key = endpoint_config.get('data_key', 'data')
     id_fields = endpoint_config.get('key_properties')
-    lock_period_ind = endpoint_config.get('lock_period_ind', False)
 
-    # Get the latest bookmark for the stream and set the last_integer/datetime
-    last_datetime = get_bookmark(state, stream_name, start_date)
-    max_bookmark_value = last_datetime
-    LOGGER.info('stream: {}, bookmark_field: {}, last_datetime: {}'.format(
-        stream_name, bookmark_field, last_datetime))
-
-    # windowing: loop through date date_window_days date windows from last_datetime to now_datetime
-    now_datetime = utils.now()
-    if bookmark_query_field_from and bookmark_query_field_to:
-        # lock_period_days: Attribution window, look-back window, or latency window. Number of
-        #   days to ALWAYS look back, at a minimum, to account for delays in reconciling metrics.
-        # lock_period_days from config, default = 60; passed to function from sync
-        if lock_period_ind:
-            if not lock_period_days:
-                lock_period_days = 14
-        else:
-            lock_period_days = 0
-
-        # date_window_days: Number of days in each date window
-        # date_window_days from config, default = 30; passed to function from sync
-        if stream_name == 'alerts':
-            if date_window_days >= 30:
-                date_window_days = 30
-
-        # Set start window
-        last_dttm = strptime_to_utc(last_datetime)
-        start_window = now_datetime - timedelta(days=lock_period_days)
-        if last_dttm < start_window:
-            start_window = last_dttm
-
-        # Set end window
-        end_window = start_window + timedelta(days=date_window_days)
-        if end_window > now_datetime:
-            end_window = now_datetime
-    else:
-        start_window = strptime_to_utc(last_datetime)
-        end_window = now_datetime
-        diff_sec = (end_window - start_window).seconds
-        date_window_days = math.ceil(diff_sec / (3600 * 24))  # round-up difference to days
+    start_window, end_window, date_window_days, now_datetime, last_datetime, max_bookmark_value = \
+        get_dates(
+            state=state,
+            stream_name=stream_name,
+            start_date=start_date,
+            bookmark_field=bookmark_field,
+            bookmark_query_field_from=bookmark_query_field_from,
+            bookmark_query_field_to=bookmark_query_field_to,
+            date_window_days=date_window_days
+        )
 
     endpoint_total = 0
 
@@ -242,9 +255,12 @@ def sync_endpoint(
             else:
                 next_url = None
 
+            if not data or data is None:
+                total_records = 0
+                break  # No data results
+
             # Transform data with transform_json from transform.py
             # The data_key identifies the array/list of records below the <root> element
-            # LOGGER.info('data = {}'.format(data)) # TESTING, comment out
             transformed_data = []  # initialize the record list
             data_list = []
             data_dict = {}
@@ -264,20 +280,6 @@ def sync_endpoint(
                     data_list.append(data)
                     data_dict[data_key] = data_list
                     transformed_data = transform_json(data_dict, data_key)
-
-            # LOGGER.info('transformed_data = {}'.format(transformed_data)) # TESTING, comment out
-            if not transformed_data or transformed_data is None:
-                LOGGER.info('No transformed data for data = {}'.format(data))
-                total_records = 0
-                break  # No data results
-
-            # Verify key id_fields are present
-            for record in transformed_data:
-                for key in id_fields:
-                    if not record.get(key):
-                        LOGGER.info('Stream: {}, Missing key {} in record: {}'.format(
-                            stream_name, key, record))
-                        raise RuntimeError
 
             # Process records and get the max_bookmark_value and record_count for the set of records
             if stream_name in selected_streams:
@@ -300,6 +302,7 @@ def sync_endpoint(
             children = endpoint_config.get('children')
             if children:
                 for child_stream_name, child_endpoint_config in children.items():
+                    # will this work if only grandchildren are selected
                     if child_stream_name in selected_streams:
                         LOGGER.info('START Syncing: {}'.format(child_stream_name))
                         write_schema(catalog, child_stream_name)
@@ -341,8 +344,9 @@ def sync_endpoint(
                                     endpoint_config=child_endpoint_config,
                                     bookmark_field=child_bookmark_field,
                                     selected_streams=selected_streams,
-                                    lock_period_days=lock_period_days,
-                                    date_window_days=date_window_days,
+                                    # The child endpoint may be an endpoint that needs to window
+                                    # so we'll re-pull from the config here (or pass in the default)
+                                    date_window_days=int(config.get('date_window_days', '30')),
                                     parent=child_endpoint_config.get('parent'),
                                     parent_id=parent_id,
                                     account_sid=account_sid)
@@ -473,7 +477,6 @@ def sync(client, config, catalog, state):
                 endpoint_config=endpoint_config,
                 bookmark_field=bookmark_field,
                 selected_streams=selected_streams,
-                lock_period_days=int(config.get('lock_period_days', '60')),
                 date_window_days=int(config.get('date_window_days', '30')))
 
             update_currently_syncing(state, None)
