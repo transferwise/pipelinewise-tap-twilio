@@ -2,17 +2,30 @@
 
 from setuptools import setup, find_packages
 
-setup(name='tap-twilio',
-      version='0.0.1',
-      description='Singer.io tap for extracting data from the Twilio API',
-      author='jeff.huth@bytecode.io',
-      classifiers=['Programming Language :: Python :: 3 :: Only'],
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setup(name='pipelinewise-tap-twilio',
+      version='1.0.0',
+      description='Singer.io tap for extracting data from the Twilio API - PipelineWise compatible',
+      author='TransferWise',
+      url='https://github.com/transferwise/pipelinewise-tap-twilio',
+      classifiers=[
+          'License :: OSI Approved :: GNU Affero General Public License v3',
+          'Programming Language :: Python :: 3 :: Only'
+      ],
       py_modules=['tap_twilio'],
       install_requires=[
           'backoff==1.8.0',
           'requests==2.23.0',
-          'singer-python==5.9.0'
+          'pipelinewise-singer-python==1.*'
       ],
+      extras_require={
+          'test': [
+              'pylint',
+              'pytest'
+          ]
+      },
       entry_points='''
           [console_scripts]
           tap-twilio=tap_twilio:main

@@ -2,6 +2,36 @@ version: 2
 jobs:
   build:
     docker:
+      - image: circleci/python:3.7.4
+    steps:
+      - checkout
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install --upgrade pip
+            pip install .[test] --use-feature=2020-resolver
+      - run:
+         name: 'Pylinting'
+         command: |
+           . venv/bin/activate
+           pylint tap_twilio -d C,W,unexpected-keyword-arg,duplicate-code,too-many-arguments,too-many-locals,too-many-nested-blocks,useless-object-inheritance,no-self-argument,raising-non-exception,no-member
+      - run:
+          name: 'Unit Tests'
+          command: echo "No unit tests :("
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+
+version: 2
+jobs:
+  build:
+    docker:
       - image: 218546966473.dkr.ecr.us-east-1.amazonaws.com/circle-ci:tap-tester-v4
     steps:
       - checkout

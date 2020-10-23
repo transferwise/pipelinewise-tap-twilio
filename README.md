@@ -1,8 +1,12 @@
-# tap-twilio
+# pipelinewise-tap-twilio
 
-This is a [Singer](https://singer.io) tap that produces JSON-formatted data
-following the [Singer
-spec](https://github.com/singer-io/getting-started/blob/master/SPEC.md).
+[![PyPI version](https://badge.fury.io/py/pipelinewise-tap-twilio.svg)](https://badge.fury.io/py/pipelinewise-tap-twilio)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pipelinewise-tap-twilio.svg)](https://pypi.org/project/pipelinewise-tap-twilio/)
+[![License: MIT](https://img.shields.io/badge/License-AGPLv3-yellow.svg)](https://opensource.org/licenses/AGPL-3.0)
+
+[Singer](https://www.singer.io/) tap that extracts data from a [Twilio API](https://www.twilio.com/) and produces JSON-formatted data following the [Singer spec](https://github.com/singer-io/getting-started/blob/master/docs/SPEC.md).
+
+This is a [PipelineWise](https://transferwise.github.io/pipelinewise) compatible tap connector.
 
 This tap:
 
@@ -213,29 +217,14 @@ To set up authentication simply include your Twilio `account_sid` and `auth_toke
 
 1. Install
 
-    Clone this repository, and then install using setup.py. We recommend using a virtualenv:
-
     ```bash
-    > virtualenv -p python3 venv
-    > source venv/bin/activate
-    > python setup.py install
-    OR
-    > cd .../tap-twilio
-    > pip install .
+    python3 -m venv venv
+    . venv/bin/activate
+    pip install --upgrade pip
+    pip install .
     ```
-2. Dependent libraries
-    The following dependent libraries were installed.
-    ```bash
-    > pip install singer-python
-    > pip install singer-tools
-    > pip install target-stitch
-    > pip install target-json
-    
-    ```
-    - [singer-tools](https://github.com/singer-io/singer-tools)
-    - [target-stitch](https://github.com/singer-io/target-stitch)
 
-3. Create your tap's `config.json` file. The `api_key` is available in the twilio Console UI (see **Authentication** above). The `date_window_days` is the integer number of days (between the from and to dates) for date-windowing through the date-filtered endpoints (default = 30). The `start_date` is the absolute beginning date from which incremental loading on the initial load will start.
+2. Create your tap's `config.json` file. The `api_key` is available in the twilio Console UI (see **Authentication** above). The `date_window_days` is the integer number of days (between the from and to dates) for date-windowing through the date-filtered endpoints (default = 30). The `start_date` is the absolute beginning date from which incremental loading on the initial load will start.
 
     ```json
         {
@@ -258,7 +247,7 @@ To set up authentication simply include your Twilio `account_sid` and `auth_toke
     }
     ```
 
-4. Run the Tap in Discovery Mode
+3. Run the Tap in Discovery Mode
     This creates a catalog.json for selecting objects/fields to integrate:
     ```bash
     tap-twilio --config config.json --discover > catalog.json
@@ -266,75 +255,14 @@ To set up authentication simply include your Twilio `account_sid` and `auth_toke
    See the Singer docs on discovery mode
    [here](https://github.com/singer-io/getting-started/blob/master/docs/DISCOVERY_MODE.md#discovery-mode).
 
-5. Run the Tap in Sync Mode (with catalog) and [write out to state file](https://github.com/singer-io/getting-started/blob/master/docs/RUNNING_AND_DEVELOPING.md#running-a-singer-tap-with-a-singer-target)
-
+4. Run the Tap in Sync Mode (with catalog)
+ 
     For Sync mode:
     ```bash
-    > tap-twilio --config tap_config.json --catalog catalog.json > state.json
-    > tail -1 state.json > state.json.tmp && mv state.json.tmp state.json
-    ```
-    To load to json files to verify outputs:
-    ```bash
-    > tap-twilio --config tap_config.json --catalog catalog.json | target-json > state.json
-    > tail -1 state.json > state.json.tmp && mv state.json.tmp state.json
-    ```
-    To pseudo-load to [Stitch Import API](https://github.com/singer-io/target-stitch) with dry run:
-    ```bash
-    > tap-twilio --config tap_config.json --catalog catalog.json | target-stitch --config target_config.json --dry-run > state.json
-    > tail -1 state.json > state.json.tmp && mv state.json.tmp state.json
+    > tap-twilio --config tap_config.json --catalog catalog.json
     ```
 
-6. Test the Tap
-    
-    While developing the twilio tap, the following utilities were run in accordance with Singer.io best practices:
-    Pylint to improve [code quality](https://github.com/singer-io/getting-started/blob/master/docs/BEST_PRACTICES.md#code-quality):
-    ```bash
-    > pylint tap_twilio -d missing-docstring -d logging-format-interpolation -d too-many-locals -d too-many-arguments
-    ```
-    Pylint test resulted in the following score:
-    ```bash
-    Your code has been rated at 10.00/10
+   Messages are written to standard output following the Singer specification.
+   The resultant stream of JSON data can be consumed by a Singer target.
 
-    ```
-
-    To [check the tap](https://github.com/singer-io/singer-tools#singer-check-tap) and verify working:
-    ```bash
-    > tap-twilio --config tap_config.json --catalog catalog.json | singer-check-tap > state.json
-    > tail -1 state.json > state.json.tmp && mv state.json.tmp state.json
-    ```
-    Check tap resulted in the following:
-    ```bash
-        Checking stdin for valid Singer-formatted data
-        The output is valid.
-        It contained 4684 messages for 17 streams.
-        
-             23 schema messages
-           3908 record messages
-            753 state messages
-        
-        Details by stream:
-        +----------------------------------+---------+---------+
-        | stream                           | records | schemas |
-        +----------------------------------+---------+---------+
-        | usage_records                    | 0       | 1       |
-        | accounts                         | 1       | 1       |
-        | recordings                       | 0       | 1       |
-        | applications                     | 0       | 1       |
-        | conferences                      | 0       | 1       |
-        | available_phone_number_countries | 0       | 1       |
-        | usage_triggers                   | 0       | 1       |
-        | addresses                        | 0       | 1       |
-        | queues                           | 0       | 1       |
-        | calls                            | 3838    | 1       |
-        | alerts                           | 60      | 1       |
-        | outgoing_caller_ids              | 0       | 1       |
-        | incoming_phone_numbers           | 0       | 1       |
-        | transcriptions                   | 0       | 1       |
-        | messages                         | 9       | 1       |
-        | message_media                    | 0       | 7       |
-        | keys                             | 0       | 1       |
-        +----------------------------------+---------+---------+
-    ```
 ---
-
-Copyright &copy; 2020 Stitch
