@@ -6,8 +6,10 @@ from tap_twilio.streams import flatten_streams
 # Reference:
 # https://github.com/singer-io/getting-started/blob/master/docs/DISCOVERY_MODE.md#Metadata
 
+
 def get_abs_path(path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
+
 
 def get_schemas():
     schemas = {}
@@ -31,6 +33,11 @@ def get_schemas():
             valid_replication_keys=stream_metadata.get('replication_keys', None),
             replication_method=stream_metadata.get('replication_method', None)
         )
+
+        # If this is not added, the streams are skipped when loading for the first time
+        # https://github.com/singer-io/tap-shopify/issues/40
+        # However this is just a hack and I might not be understanding something. TODO correctly address this
+        mdata[0]['metadata']['selected'] = True
         field_metadata[stream_name] = mdata
 
     return schemas, field_metadata

@@ -12,7 +12,7 @@
 #   bookmark_type: Data type for bookmark, integer or datetime
 #   children: A collection of child endpoints (where the endpoint path includes the parent id)
 #   parent: On each of the children, the singular stream name for parent element
-
+# todo review task_channels.json, review all fields with json information that needs extra work, TaskQueue Statistics
 STREAMS = {
     # Reference: https://www.twilio.com/docs/usage/api/account#read-multiple-account-resources
 
@@ -38,6 +38,51 @@ STREAMS = {
                 'params': {},
                 'pagination': 'root',
             },
+            'events': {
+                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/Events',
+                'data_key': 'events',
+                'key_properties': ['sid'],
+                'replication_method': 'FULL_TABLE',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+            },
+            'tasks': {
+                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/Tasks',
+                'data_key': 'tasks',
+                'key_properties': ['sid'],
+                'replication_method': 'FULL_TABLE',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+            },
+            'task_channels': {
+                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/TaskChannels',
+                'data_key': 'task_channels',
+                'key_properties': ['sid'],
+                'replication_method': 'FULL_TABLE',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+            },
+            'task_queues': {
+                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/TaskQueues',
+                'data_key': 'task_queues',
+                'key_properties': ['sid'],
+                'replication_method': 'FULL_TABLE',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+            },
+
             'workers': {
                 'api_url': '',  # https://taskrouter.twilio.com',
                 'api_version': 'v1',
@@ -47,7 +92,7 @@ STREAMS = {
                 'replication_method': 'FULL_TABLE',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'none',
+                'pagination': 'root',
             },
             'workflows': {
                 'api_url': '',#https://taskrouter.twilio.com',
