@@ -28,7 +28,7 @@ STREAMS = {
         'pagination': 'root',
         'children': {
             'activities': {
-                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
                 'path': 'Workspaces/{ParentId}/Activities',
                 'data_key': 'activities',
@@ -39,7 +39,7 @@ STREAMS = {
                 'pagination': 'root',
             },
             'events': {
-                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
                 'path': 'Workspaces/{ParentId}/Events',
                 'data_key': 'events',
@@ -50,7 +50,7 @@ STREAMS = {
                 'pagination': 'root',
             },
             'tasks': {
-                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
                 'path': 'Workspaces/{ParentId}/Tasks',
                 'data_key': 'tasks',
@@ -61,7 +61,7 @@ STREAMS = {
                 'pagination': 'root',
             },
             'task_channels': {
-                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
                 'path': 'Workspaces/{ParentId}/TaskChannels',
                 'data_key': 'task_channels',
@@ -72,7 +72,7 @@ STREAMS = {
                 'pagination': 'root',
             },
             'task_queues': {
-                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
                 'path': 'Workspaces/{ParentId}/TaskQueues',
                 'data_key': 'task_queues',
@@ -84,7 +84,7 @@ STREAMS = {
             },
 
             'workers': {
-                'api_url': '',  # https://taskrouter.twilio.com',
+                'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
                 'path': 'Workspaces/{ParentId}/Workers',
                 'data_key': 'workers',
@@ -95,7 +95,7 @@ STREAMS = {
                 'pagination': 'root',
             },
             'workflows': {
-                'api_url': '',#https://taskrouter.twilio.com',
+                'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
                 'path': 'Workspaces/{ParentId}/Workflows',
                 'data_key': 'workflows',
