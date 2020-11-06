@@ -34,7 +34,7 @@
       ],
       "format": "date-time"
     },
-  "friendly_name": {
+    "friendly_name": {
       "type": [
         "null",
         "string"
@@ -97,43 +97,43 @@
         }
       }
     },
-  "reservation_activity_name": {
+    "reservation_activity_name": {
       "type": [
         "null",
         "string"
       ]
     },
-  "reservation_activity_sid": {
+    "reservation_activity_sid": {
       "type": [
         "null",
         "string"
       ]
     },
-  "sid": {
+    "sid": {
       "type": [
         "null",
         "string"
       ]
     },
-  "target_workers": {
+    "target_workers": {
       "type": [
         "null",
         "string"
       ]
     },
-  "task_order": {
+    "task_order": {
       "type": [
         "null",
         "string"
       ]
     },
-  "url": {
+    "url": {
       "type": [
         "null",
         "string"
       ]
     },
-  "workspace_sid": {
+    "workspace_sid": {
       "type": [
         "null",
         "string"
