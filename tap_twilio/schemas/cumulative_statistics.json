@@ -1,0 +1,140 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "reservations_created": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "account_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "reservations_rejected": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "tasks_completed": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "end_time": {
+      "format": "date-time",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "tasks_entered": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "tasks_canceled": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "reservations_accepted": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "task_queue_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "reservations_timed_out": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "url": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "wait_duration_until_canceled": {
+      "type": [
+        "null",
+        "object"
+      ]
+    },
+    "wait_duration_until_accepted": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "wait_duration_in_queue_until_accepted": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "split_by_wait_time": {
+      "type": [
+        "null",
+        "object"
+      ]
+    },
+    "start_time": {
+      "format": "date-time",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "tasks_moved": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "reservations_canceled": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "workspace_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "tasks_deleted": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "reservations_rescinded": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "avg_task_acceptance_time": {
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  }
+}

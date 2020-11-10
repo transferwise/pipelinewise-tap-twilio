@@ -81,8 +81,19 @@ STREAMS = {
                 'replication_keys': ['date_updated'],
                 'params': {},
                 'pagination': 'root',
+                'children': {
+                    'cumulative_statistics': {
+                        'api_url': 'https://taskrouter.twilio.com',
+                        'api_version': 'v1',
+                        'path': 'Workspaces/{ParentId}/TaskQueues/{ParentId}/CumulativeStatistics',
+                        'data_key': 'cumulative_statistics',
+                        'key_properties': [],
+                        'replication_method': 'FULL_TABLE',
+                        'params': {},
+                        'pagination': 'root'
+                    },
+                }
             },
-
             'workers': {
                 'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
