@@ -91,7 +91,7 @@ STREAMS = {
                         'replication_method': 'FULL_TABLE',
                         'params': {},
                         'pagination': 'root'
-                    },
+                    }
                 }
             },
             'workers': {
@@ -104,6 +104,18 @@ STREAMS = {
                 'replication_keys': ['date_updated'],
                 'params': {},
                 'pagination': 'root',
+                'children': {
+                    'channels': {
+                        'api_url': 'https://taskrouter.twilio.com',
+                        'api_version': 'v1',
+                        'path': 'Workspaces/{ParentId}/Workers/{ParentId}/Channels',
+                        'data_key': 'channels',
+                        'key_properties': ["sid"],
+                        'replication_method': 'FULL_TABLE',
+                        'params': {},
+                        'pagination': 'root'
+                    }
+                }
             },
             'workflows': {
                 'api_url': 'https://taskrouter.twilio.com',
