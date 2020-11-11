@@ -112,6 +112,7 @@ STREAMS = {
                         'data_key': 'channels',
                         'key_properties': ["sid"],
                         'replication_method': 'FULL_TABLE',
+                        'replication_keys': ['date_updated'],
                         'params': {},
                         'pagination': 'root'
                     }
