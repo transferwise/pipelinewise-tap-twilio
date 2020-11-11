@@ -73,19 +73,100 @@
       "type": [
         "null",
         "object"
-      ]
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "avg": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "min": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "max": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "total": {
+          "type": [
+            "null",
+            "number"
+          ]
+        }
+      }
     },
     "wait_duration_until_accepted": {
       "type": [
         "null",
         "string"
-      ]
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "avg": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "min": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "max": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "total": {
+          "type": [
+            "null",
+            "number"
+          ]
+        }
+      }
     },
     "wait_duration_in_queue_until_accepted": {
       "type": [
         "null",
         "string"
-      ]
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "avg": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "min": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "max": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "total": {
+          "type": [
+            "null",
+            "number"
+          ]
+        }
+      }
     },
     "split_by_wait_time": {
       "type": [
