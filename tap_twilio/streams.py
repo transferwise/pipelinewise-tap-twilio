@@ -318,6 +318,8 @@ STREAMS = {
         'params': {},
         'pagingation': 'meta'
     },
+    # pylint: disable=line-too-long
+    # Reference: https://www.twilio.com/docs/taskrouter/api/workspace#list-all-workspaces
     'workspaces': {
         'api_url': 'https://taskrouter.twilio.com',
         'api_version': 'v1',
@@ -329,6 +331,8 @@ STREAMS = {
         'params': {},
         'pagination': 'root',
         'children': {
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/activity#read-multiple-activity-resources
             'activities': {
                 'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
@@ -340,6 +344,8 @@ STREAMS = {
                 'params': {},
                 'pagination': 'root',
             },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/event#list-all-events
             'events': {
                 'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
@@ -351,6 +357,8 @@ STREAMS = {
                 'params': {},
                 'pagination': 'root',
             },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/task#read-multiple-task-resources
             'tasks': {
                 'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
@@ -362,6 +370,8 @@ STREAMS = {
                 'params': {},
                 'pagination': 'root',
             },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/task-channel#read-multiple-taskchannel-resources
             'task_channels': {
                 'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
@@ -373,6 +383,8 @@ STREAMS = {
                 'params': {},
                 'pagination': 'root',
             },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/task-queue#action-list
             'task_queues': {
                 'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
@@ -384,6 +396,8 @@ STREAMS = {
                 'params': {},
                 'pagination': 'root',
                 'children': {
+                    # pylint: disable=line-too-long
+                    # Reference: https://www.twilio.com/docs/taskrouter/api/taskqueue-statistics#taskqueue-cumulative-statistics
                     'cumulative_statistics': {
                         'api_url': 'https://taskrouter.twilio.com',
                         'api_version': 'v1',
@@ -396,6 +410,8 @@ STREAMS = {
                     }
                 }
             },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/worker#read-multiple-worker-resources
             'workers': {
                 'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
@@ -407,6 +423,8 @@ STREAMS = {
                 'params': {},
                 'pagination': 'root',
                 'children': {
+                    # pylint: disable=line-too-long
+                    # Reference: https://www.twilio.com/docs/taskrouter/api/worker-channel#read-multiple-workerchannel-resources
                     'channels': {
                         'api_url': 'https://taskrouter.twilio.com',
                         'api_version': 'v1',
@@ -420,6 +438,8 @@ STREAMS = {
                     }
                 }
             },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/workflow#read-multiple-workflow-resources
             'workflows': {
                 'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
