@@ -33,11 +33,6 @@ def get_schemas():
             valid_replication_keys=stream_metadata.get('replication_keys', None),
             replication_method=stream_metadata.get('replication_method', None)
         )
-
-        # If this is not added, the streams are skipped when loading for the first time
-        # https://github.com/singer-io/tap-shopify/issues/40
-        # However this is just a hack and I might not be understanding something. TODO correctly address this
-        mdata[0]['metadata']['selected'] = True
         field_metadata[stream_name] = mdata
 
     return schemas, field_metadata
