@@ -207,12 +207,12 @@ def sync_endpoint(
             params[bookmark_query_field_to] = strftime(end_window)[:10]  # truncate date
 
         # pagination: loop thru all pages of data using next (if not None)
-        page = 1
+        page = 0
         api_version = endpoint_config.get('api_version')
         if api_version in path:
-            next_url = '{}{}'.format(endpoint_config.get('api_url'), path)
+            next_url = path
         else:
-            next_url = '{}/{}/{}'.format(endpoint_config.get('api_url'), api_version, path)
+            next_url = '{}/{}/{}?Page={}&PageSize=100'.format(endpoint_config.get('api_url'), api_version, path, page)
 
         offset = 0
         limit = 500  # Default limit for Twilio API, unable to change this
@@ -222,13 +222,13 @@ def sync_endpoint(
             # Need URL querystring for 1st page; subsequent pages provided by next_url
             # querystring: Squash query params into string
             querystring = None
-            if page == 1 and not params == {}:
-                querystring = '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
-                # Replace <parent_id> in child stream params
-                if parent_id:
-                    querystring = querystring.replace('<parent_id>', parent_id)
-            else:
-                params = None
+            #if page == 1 and not params == {}:
+            #    querystring = '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
+            #    # Replace <parent_id> in child stream params
+            #    if parent_id:
+            #        querystring = querystring.replace('<parent_id>', parent_id)
+            #else:
+            params = None
             LOGGER.info('URL for Stream {}: {}{}'.format(
                 stream_name,
                 next_url,
@@ -248,12 +248,8 @@ def sync_endpoint(
                 break  # No data results
 
             # Get pagination details
-            pagination = data.get('meta', {}).get('pagination', {})
-            api_total = int(pagination.get('total_results', 0))
-            if pagination.get('next', {}).get('rel') == 'next':
-                next_url = pagination.get('next', {}).get('href')
-            else:
-                next_url = None
+            next_url = data.get('meta', {}).get('next_page_url')
+            api_total = 0
 
             if not data or data is None:
                 total_records = 0
@@ -327,7 +323,7 @@ def sync_endpoint(
                             # their endpoints will be in the results,
                             # this will grab the child path for the child stream we're syncing,
                             # if we're syncing it. If it doesn't exist we just skip it below.
-                            child_path = record.get('_subresource_uris', {})\
+                            child_path = record.get('_subresource_uris', record.get('links', {}))\
                                 .get(child_stream_name, None)
                             child_bookmark_field = next(iter(child_endpoint_config.get(
                                 'replication_keys', [])), None)

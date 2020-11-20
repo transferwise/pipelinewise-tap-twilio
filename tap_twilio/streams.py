@@ -12,7 +12,6 @@
 #   bookmark_type: Data type for bookmark, integer or datetime
 #   children: A collection of child endpoints (where the endpoint path includes the parent id)
 #   parent: On each of the children, the singular stream name for parent element
-
 STREAMS = {
     # Reference: https://www.twilio.com/docs/usage/api/account#read-multiple-account-resources
     'accounts': {
@@ -318,7 +317,142 @@ STREAMS = {
         'max_days_ago': 30,
         'params': {},
         'pagingation': 'meta'
-    }
+    },
+    # pylint: disable=line-too-long
+    # Reference: https://www.twilio.com/docs/taskrouter/api/workspace#list-all-workspaces
+    'workspaces': {
+        'api_url': 'https://taskrouter.twilio.com',
+        'api_version': 'v1',
+        'path': 'Workspaces',
+        'data_key': 'workspaces',
+        'key_properties': ['sid'],
+        'replication_method': 'INCREMENTAL',
+        'replication_keys': ['date_updated'],
+        'params': {},
+        'pagination': 'root',
+        'children': {
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/activity#read-multiple-activity-resources
+            'activities': {
+                'api_url': 'https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/Activities',
+                'data_key': 'activities',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+            },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/event#list-all-events
+            'events': {
+                'api_url': 'https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/Events',
+                'data_key': 'events',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['event_date'],
+                'params': {},
+                'pagination': 'root',
+            },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/task#read-multiple-task-resources
+            'tasks': {
+                'api_url': 'https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/Tasks',
+                'data_key': 'tasks',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+            },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/task-channel#read-multiple-taskchannel-resources
+            'task_channels': {
+                'api_url': 'https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/TaskChannels',
+                'data_key': 'task_channels',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+            },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/task-queue#action-list
+            'task_queues': {
+                'api_url': 'https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/TaskQueues',
+                'data_key': 'task_queues',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+                'children': {
+                    # pylint: disable=line-too-long
+                    # Reference: https://www.twilio.com/docs/taskrouter/api/taskqueue-statistics#taskqueue-cumulative-statistics
+                    'cumulative_statistics': {
+                        'api_url': 'https://taskrouter.twilio.com',
+                        'api_version': 'v1',
+                        'path': 'Workspaces/{ParentId}/TaskQueues/{ParentId}/CumulativeStatistics',
+                        'data_key': 'cumulative_statistics',
+                        'key_properties': [],
+                        'replication_method': 'FULL_TABLE',
+                        'params': {},
+                        'pagination': 'root'
+                    }
+                }
+            },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/worker#read-multiple-worker-resources
+            'workers': {
+                'api_url': 'https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/Workers',
+                'data_key': 'workers',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+                'children': {
+                    # pylint: disable=line-too-long
+                    # Reference: https://www.twilio.com/docs/taskrouter/api/worker-channel#read-multiple-workerchannel-resources
+                    'channels': {
+                        'api_url': 'https://taskrouter.twilio.com',
+                        'api_version': 'v1',
+                        'path': 'Workspaces/{ParentId}/Workers/{ParentId}/Channels',
+                        'data_key': 'channels',
+                        'key_properties': ["sid"],
+                        'replication_method': 'INCREMENTAL',
+                        'replication_keys': ['date_updated'],
+                        'params': {},
+                        'pagination': 'root'
+                    }
+                }
+            },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/taskrouter/api/workflow#read-multiple-workflow-resources
+            'workflows': {
+                'api_url': 'https://taskrouter.twilio.com',
+                'api_version': 'v1',
+                'path': 'Workspaces/{ParentId}/Workflows',
+                'data_key': 'workflows',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+            },
+        },
+    },
 }
 
 
