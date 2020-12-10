@@ -1,0 +1,207 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "account_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "consumption_report_interval": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "date_created": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "date-time"
+    },
+    "date_updated": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "date-time"
+    },
+    "default_channel_creator_role_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "default_channel_role_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "default_service_role_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "default_service_role_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "limits": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "channel_members": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "user_channels": {
+          "type": [
+            "null",
+            "number"
+          ]
+        }
+      }
+    },
+    "links": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "channels": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "users": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "roles": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "bindings": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    },
+    "notifications": {
+      "type": [
+        "null",
+        "object"
+      ]
+    },
+    "post_webhook_url": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "pre_webhook_url": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "pre_webhook_retry_count": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "post_webhook_retry_count": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "reachability_enabled": {
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    "read_status_enabled": {
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    "sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "typing_indicator_timeout": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "url": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "webhook_filters": {
+      "type": [
+        "null",
+        "array"
+      ],
+      "items": {
+        "additionalProperties": false,
+        "type": "string"
+      }
+    },
+    "webhook_method": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "media": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "size_limit_mb": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "compatibility_message": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -449,6 +449,81 @@ STREAMS = {
                 'replication_keys': ['date_updated'],
                 'params': {},
                 'pagination': 'root',
+            },
+        },
+    },
+    'services': {
+        'api_url': 'https://chat.twilio.com',
+        'api_version': 'v2',
+        # todo change Service sid to prod
+        'path': 'Services',
+        'data_key': 'services',
+        'key_properties': ['sid'],
+        'replication_method': 'INCREMENTAL',
+        'replication_keys': ['date_updated'],
+        'params': {},
+        'pagination': 'root',
+        'children': {
+            'roles': {
+                'api_url': 'https://chat.twilio.com',
+                'api_version': 'v2',
+                'path': 'Services/{ParentId}/Channels/{ParentId}/Roles',
+                'data_key': 'roles',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root'
+            },
+            'channels': {
+                'api_url': 'https://chat.twilio.com',
+                'api_version': 'v2',
+                # todo change Service sid to prod
+                'path': 'Services/{ParentId}/Channels',
+                'data_key': 'channels',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+                'children': {
+                    'members': {
+                        'api_url': 'https://chat.twilio.com',
+                        'api_version': 'v2',
+                        'path': 'Services/{ParentId}/Channels/{ParentId}/Members',
+                        'data_key': 'members',
+                        'key_properties': ['sid'],
+                        'replication_method': 'INCREMENTAL',
+                        'replication_keys': ['date_updated'],
+                        'params': {},
+                        'pagination': 'root'
+                    }
+                    # there already is a messages.json, so we cannot name this stream that. But if name it to anything else,
+                    # then it won't find the link for the stream in the links of the parent resource (channel)
+                    # 'message': {
+                    #     'api_url': 'https://chat.twilio.com',
+                    #     'api_version': 'v2',
+                    #     'path': 'Services/{ParentId}/Channels/{ParentId}/Messages',
+                    #     'data_key': 'message',
+                    #     'key_properties': ['sid'],
+                    #     'replication_method': 'INCREMENTAL',
+                    #     'replication_keys': ['date_updated'],
+                    #     'params': {},
+                    #     'pagination': 'root'
+                    # }
+                }
+
+            },
+            'users': {
+                'api_url': 'https://chat.twilio.com',
+                'api_version': 'v2',
+                'path': 'Services/{ParentId}/Users',
+                'data_key': 'users',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root'
             }
         }
     }
