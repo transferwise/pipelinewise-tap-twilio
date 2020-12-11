@@ -73,7 +73,7 @@
     "joined_channels_count": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "links": {

@@ -455,7 +455,6 @@ STREAMS = {
     'services': {
         'api_url': 'https://chat.twilio.com',
         'api_version': 'v2',
-        # todo change Service sid to prod
         'path': 'Services',
         'data_key': 'services',
         'key_properties': ['sid'],

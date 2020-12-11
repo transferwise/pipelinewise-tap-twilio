@@ -41,7 +41,7 @@
     "last_consumed_message_index": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "last_consumption_timestamp": {

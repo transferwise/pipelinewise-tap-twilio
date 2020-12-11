@@ -67,13 +67,13 @@
     "members_count": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "messages_count": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "url": {
