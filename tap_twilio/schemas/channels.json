@@ -2,46 +2,34 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "sid": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
     "account_sid": {
       "type": [
         "null",
         "string"
       ]
     },
-    "service_sid": {
+    "assigned_tasks": {
       "type": [
         "null",
-        "string"
+        "number"
       ]
     },
-    "friendly_name": {
+    "available": {
       "type": [
         "null",
-        "string"
+        "boolean"
       ]
     },
-    "unique_name": {
+    "available_capacity_percentage": {
       "type": [
         "null",
-        "string"
+        "number"
       ]
     },
-    "attributes": {
+    "configured_capacity": {
       "type": [
         "null",
-        "string"
-      ]
-    },
-    "type": {
-      "type": [
-        "null",
-        "string"
+        "number"
       ]
     },
     "date_created": {
@@ -58,22 +46,22 @@
       ],
       "format": "date-time"
     },
-    "created_by": {
+    "sid": {
       "type": [
         "null",
         "string"
       ]
     },
-    "members_count": {
+    "task_channel_sid": {
       "type": [
         "null",
-        "integer"
+        "string"
       ]
     },
-    "messages_count": {
+    "task_channel_unique_name": {
       "type": [
         "null",
-        "integer"
+        "string"
       ]
     },
     "url": {
@@ -82,44 +70,17 @@
         "string"
       ]
     },
-    "links": {
+    "workspace_sid": {
       "type": [
         "null",
-        "object"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "members": {
-          "type": [
-            "null",
-            "string"
-          ]
-        },
-        "messages": {
-          "type": [
-            "null",
-            "string"
-          ]
-        },
-        "invites": {
-          "type": [
-            "null",
-            "string"
-          ]
-        },
-        "webhooks": {
-          "type": [
-            "null",
-            "string"
-          ]
-        },
-        "last_message": {
-          "type": [
-            "null",
-            "string"
-          ]
-        }
-      }
+        "string"
+      ]
+    },
+    "worker_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
     }
   }
 }
