@@ -8,30 +8,6 @@
         "string"
       ]
     },
-    "workspace_sid": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    "sid": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    "friendly_name": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
-    "unique_name": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
     "date_created": {
       "type": [
         "null",
@@ -46,16 +22,40 @@
       ],
       "format": "date-time"
     },
-    "channel_optimized_routing": {
+    "friendly_name": {
       "type": [
         "null",
-        "boolean"
+        "string"
+      ]
+    },
+    "sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "unique_name": {
+      "type": [
+        "null",
+        "string"
       ]
     },
     "url": {
       "type": [
         "null",
         "string"
+      ]
+    },
+    "workspace_sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "channel_optimized_routing": {
+      "type": [
+        "null",
+        "boolean"
       ]
     },
     "links": {

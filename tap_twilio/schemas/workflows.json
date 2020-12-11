@@ -79,9 +79,29 @@
     "links": {
       "type": [
         "null",
-        "string"
-      ]
+        "object"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "statistics": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "real_time_statistics": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "cumulative_statistics": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
     }
-
   }
 }

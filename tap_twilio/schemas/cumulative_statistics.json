@@ -5,7 +5,7 @@
     "reservations_created": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "account_sid": {
@@ -17,13 +17,13 @@
     "reservations_rejected": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "tasks_completed": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "end_time": {
@@ -36,19 +36,19 @@
     "tasks_entered": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "tasks_canceled": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "reservations_accepted": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "task_queue_sid": {
@@ -60,7 +60,7 @@
     "reservations_timed_out": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "url": {
@@ -79,25 +79,25 @@
         "avg": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "min": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "max": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "total": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         }
       }
@@ -105,32 +105,32 @@
     "wait_duration_until_accepted": {
       "type": [
         "null",
-        "string"
+        "object"
       ],
       "additionalProperties": false,
       "properties": {
         "avg": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "min": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "max": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "total": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         }
       }
@@ -138,32 +138,32 @@
     "wait_duration_in_queue_until_accepted": {
       "type": [
         "null",
-        "string"
+        "object"
       ],
       "additionalProperties": false,
       "properties": {
         "avg": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "min": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "max": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "total": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         }
       }
@@ -184,13 +184,13 @@
     "tasks_moved": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "reservations_canceled": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "workspace_sid": {
@@ -202,19 +202,19 @@
     "tasks_deleted": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "reservations_rescinded": {
       "type": [
         "null",
-        "string"
+        "integer"
       ]
     },
     "avg_task_acceptance_time": {
       "type": [
         "null",
-        "string"
+        "integer"
       ]
     }
   }
