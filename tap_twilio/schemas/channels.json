@@ -2,34 +2,46 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "sid": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
     "account_sid": {
       "type": [
         "null",
         "string"
       ]
     },
-    "assigned_tasks": {
+    "service_sid": {
       "type": [
         "null",
-        "integer"
+        "string"
       ]
     },
-    "available": {
+    "friendly_name": {
       "type": [
         "null",
-        "boolean"
+        "string"
       ]
     },
-    "available_capacity_percentage": {
+    "unique_name": {
       "type": [
         "null",
-        "integer"
+        "string"
       ]
     },
-    "configured_capacity": {
+    "attributes": {
       "type": [
         "null",
-        "integer"
+        "string"
+      ]
+    },
+    "type": {
+      "type": [
+        "null",
+        "string"
       ]
     },
     "date_created": {
@@ -46,22 +58,22 @@
       ],
       "format": "date-time"
     },
-    "sid": {
+    "created_by": {
       "type": [
         "null",
         "string"
       ]
     },
-    "task_channel_sid": {
+    "members_count": {
       "type": [
         "null",
-        "string"
+        "number"
       ]
     },
-    "task_channel_unique_name": {
+    "messages_count": {
       "type": [
         "null",
-        "string"
+        "number"
       ]
     },
     "url": {
@@ -70,17 +82,44 @@
         "string"
       ]
     },
-    "workspace_sid": {
+    "links": {
       "type": [
         "null",
-        "string"
-      ]
-    },
-    "worker_sid": {
-      "type": [
-        "null",
-        "string"
-      ]
+        "object"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "members": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "messages": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "invites": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "webhooks": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "last_message": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
     }
   }
 }

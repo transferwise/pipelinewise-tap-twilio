@@ -79,20 +79,20 @@
     "links": {
       "type": [
         "null",
-        "objet"
+        "object"
       ],
       "additionalProperties": false,
       "properties": {
         "user_channels": {
           "type": [
             "null",
-            "number"
+            "string"
           ]
         },
         "user_bindings": {
           "type": [
             "null",
-            "number"
+            "string"
           ]
         }
       }
