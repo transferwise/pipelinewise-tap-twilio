@@ -29,7 +29,7 @@
     "available": {
       "type": [
         "null",
-        "string"
+        "boolean"
       ]
     },
     "date_created": {
@@ -84,7 +84,7 @@
       ],
       "additionalProperties": false,
       "properties": {
-        "activities": {
+        "activity": {
           "type": [
             "null",
             "string"

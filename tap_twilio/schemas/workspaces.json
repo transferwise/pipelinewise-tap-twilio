@@ -58,70 +58,76 @@
         "object"
       ],
       "additionalProperties": false,
-        "properties": {
-          "activities": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "statistics": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "real_time_statistics": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "cumulative_statistics": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "task_queues": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "tasks": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "workers": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "workflows": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "task_channels": {
-            "type": [
-              "null",
-              "string"
-            ]
-          },
-          "events": {
-            "type": [
-              "null",
-              "string"
-            ]
-          }
+      "properties": {
+        "activities": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "statistics": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "real_time_statistics": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "cumulative_statistics": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "task_queues": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "tasks": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "workers": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "workflows": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "task_channels": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "events": {
+          "type": [
+            "null",
+            "string"
+          ]
         }
-      },
+      }
+    },
     "multitask_enabled": {
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    "multi_task_enabled": {
       "type": [
         "null",
         "boolean"
