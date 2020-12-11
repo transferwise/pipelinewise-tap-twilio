@@ -208,13 +208,13 @@
     "reservations_rescinded": {
       "type": [
         "null",
-        "string"
+        "integer"
       ]
     },
     "avg_task_acceptance_time": {
       "type": [
         "null",
-        "string"
+        "integer"
       ]
     }
   }
