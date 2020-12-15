@@ -519,26 +519,28 @@ STREAMS = {
             #     'params': {},
             #     'pagination': 'root'
             # }
-        }
 
-    },
-    # pylint: disable=line-too-long
-    # Reference: https://www.twilio.com/docs/chat/rest/user-resource#read-multiple-user-resources
-    'users': {
-        'api_url': 'https://chat.twilio.com',
-        'api_version': 'v2',
-        'path': 'Services/{ParentId}/Users',
-        'data_key': 'users',
-        'key_properties': ['sid'],
-        'replication_method': 'INCREMENTAL',
-        'replication_keys': ['date_updated'],
-        'params': {},
-        'pagination': 'root'
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/chat/rest/user-resource#read-multiple-user-resources
+            'users': {
+                'api_url': 'https://chat.twilio.com',
+                'api_version': 'v2',
+                'path': 'Services/{ParentId}/Users',
+                'data_key': 'users',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root'
+            }
+        }
     }
 }
 
 
 # De-nest children nodes for Discovery mode
+
+
 def flatten_streams():
     flat_streams = {}
     # Loop through parents
