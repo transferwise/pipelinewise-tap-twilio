@@ -478,48 +478,45 @@ STREAMS = {
                 'params': {},
                 'pagination': 'root'
             },
-            # there already is a channels.json, so we cannot name this stream that. But if name it to anything else,
-            # then it won't find the link for the stream in the links of the parent resource (channel)
             # pylint: disable=line-too-long
             # Reference: https://www.twilio.com/docs/chat/rest/channel-resource#read-multiple-channel-resources
-            # 'channels': {
-            #     'api_url': 'https://chat.twilio.com',
-            #     'api_version': 'v2',
-            #     'path': 'Services/{ParentId}/Channels',
-            #     'data_key': 'channels',
-            #     'key_properties': ['sid'],
-            #     'replication_method': 'INCREMENTAL',
-            #     'replication_keys': ['date_updated'],
-            #     'params': {},
-            #     'pagination': 'root',
-            #     'children': {
-            #         'members': {
-            #             'api_url': 'https://chat.twilio.com',
-            #             'api_version': 'v2',
-            #             'path': 'Services/{ParentId}/Channels/{ParentId}/Members',
-            #             'data_key': 'members',
-            #             'key_properties': ['sid'],
-            #             'replication_method': 'INCREMENTAL',
-            #             'replication_keys': ['date_updated'],
-            #             'params': {},
-            #             'pagination': 'root'
-            #         }
-            # there already is a messages.json, so we cannot name this stream that. But if name it to anything else,
-            # then it won't find the link for the stream in the links of the parent resource (channel)
-            # pylint: disable=line-too-long
-            # Reference: https://www.twilio.com/docs/chat/rest/message-resource#read-multiple-message-resources
-            # 'message': {
-            #     'api_url': 'https://chat.twilio.com',
-            #     'api_version': 'v2',
-            #     'path': 'Services/{ParentId}/Channels/{ParentId}/Messages',
-            #     'data_key': 'message',
-            #     'key_properties': ['sid'],
-            #     'replication_method': 'INCREMENTAL',
-            #     'replication_keys': ['date_updated'],
-            #     'params': {},
-            #     'pagination': 'root'
-            # }
-
+            'chat_channels': {
+                'api_url': 'https://chat.twilio.com',
+                'api_version': 'v2',
+                'path': 'Services/{ParentId}/Channels',
+                'data_key': 'channels',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+                'children': {
+                    'members': {
+                        'api_url': 'https://chat.twilio.com',
+                        'api_version': 'v2',
+                        'path': 'Services/{ParentId}/Channels/{ParentId}/Members',
+                        'data_key': 'members',
+                        'key_properties': ['sid'],
+                        'replication_method': 'INCREMENTAL',
+                        'replication_keys': ['date_updated'],
+                        'params': {},
+                        'pagination': 'root'
+                    },
+                    # pylint: disable=line-too-long
+                    # Reference: https://www.twilio.com/docs/chat/rest/message-resource#read-multiple-message-resources
+                    'chat_messages': {
+                        'api_url': 'https://chat.twilio.com',
+                        'api_version': 'v2',
+                        'path': 'Services/{ParentId}/Channels/{ParentId}/Messages',
+                        'data_key': 'messages',
+                        'key_properties': ['sid'],
+                        'replication_method': 'INCREMENTAL',
+                        'replication_keys': ['date_updated'],
+                        'params': {},
+                        'pagination': 'root'
+                    }
+                }
+            },
             # pylint: disable=line-too-long
             # Reference: https://www.twilio.com/docs/chat/rest/user-resource#read-multiple-user-resources
             'users': {
