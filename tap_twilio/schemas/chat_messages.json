@@ -79,13 +79,13 @@
     "index": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "type": {
       "type": [
         "null",
-        "number"
+        "string"
       ]
     },
     "media": {
