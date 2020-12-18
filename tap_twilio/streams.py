@@ -497,8 +497,7 @@ STREAMS = {
                         'path': 'Services/{ParentId}/Channels/{ParentId}/Members',
                         'data_key': 'members',
                         'key_properties': ['sid'],
-                        'replication_method': 'INCREMENTAL',
-                        'replication_keys': ['date_updated'],
+                        'replication_method': 'FULL_TABLE',
                         'params': {},
                         'pagination': 'root'
                     },
@@ -510,8 +509,7 @@ STREAMS = {
                         'path': 'Services/{ParentId}/Channels/{ParentId}/Messages',
                         'data_key': 'messages',
                         'key_properties': ['sid'],
-                        'replication_method': 'INCREMENTAL',
-                        'replication_keys': ['date_updated'],
+                        'replication_method': 'FULL_TABLE',
                         'params': {},
                         'pagination': 'root'
                     }
