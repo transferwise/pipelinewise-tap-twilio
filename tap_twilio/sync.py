@@ -323,8 +323,13 @@ def sync_endpoint(
                             # their endpoints will be in the results,
                             # this will grab the child path for the child stream we're syncing,
                             # if we're syncing it. If it doesn't exist we just skip it below.
-                            child_path = record.get('_subresource_uris', record.get('links', {}))\
-                                .get(child_stream_name, None)
+                            child_paths = record.get('_subresource_uris', record.get('links', {}))
+
+                            # For some resources, the name of the stream is the key for the child_paths
+                            # but for others', the data_key contains the correct key
+                            child_path = child_paths.get(child_stream_name,
+                                                         child_paths.get(child_endpoint_config.get('data_key', None)))
+
                             child_bookmark_field = next(iter(child_endpoint_config.get(
                                 'replication_keys', [])), None)
 

@@ -376,7 +376,7 @@ STREAMS = {
                 'api_url': 'https://taskrouter.twilio.com',
                 'api_version': 'v1',
                 'path': 'Workspaces/{ParentId}/TaskChannels',
-                'data_key': 'task_channels',
+                'data_key': 'channels',
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
@@ -431,8 +431,7 @@ STREAMS = {
                         'path': 'Workspaces/{ParentId}/Workers/{ParentId}/Channels',
                         'data_key': 'channels',
                         'key_properties': ["sid"],
-                        'replication_method': 'INCREMENTAL',
-                        'replication_keys': ['date_updated'],
+                        'replication_method': 'FULL_TABLE',
                         'params': {},
                         'pagination': 'root'
                     }
@@ -450,9 +449,9 @@ STREAMS = {
                 'replication_keys': ['date_updated'],
                 'params': {},
                 'pagination': 'root',
-            },
-        },
-    },
+            }
+        }
+    }
 }
 
 
