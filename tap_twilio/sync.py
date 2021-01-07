@@ -210,7 +210,10 @@ def sync_endpoint(
         page = 0
         api_version = endpoint_config.get('api_version')
         if api_version in path:
-            next_url = path
+            if path.startswith('http'):
+                next_url = path
+            else:
+                next_url = '{}{}'.format(endpoint_config.get('api_url'), path)
         else:
             next_url = '{}/{}/{}?Page={}&PageSize=100'.format(endpoint_config.get('api_url'), api_version, path, page)
 
@@ -222,13 +225,13 @@ def sync_endpoint(
             # Need URL querystring for 1st page; subsequent pages provided by next_url
             # querystring: Squash query params into string
             querystring = None
-            #if page == 1 and not params == {}:
-            #    querystring = '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
-            #    # Replace <parent_id> in child stream params
-            #    if parent_id:
-            #        querystring = querystring.replace('<parent_id>', parent_id)
-            #else:
-            params = None
+            if page == 1 and not params == {} and params is not None:
+               querystring = '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
+               # Replace <parent_id> in child stream params
+               if parent_id:
+                   querystring = querystring.replace('<parent_id>', parent_id)
+            else:
+                params = None
             LOGGER.info('URL for Stream {}: {}{}'.format(
                 stream_name,
                 next_url,
