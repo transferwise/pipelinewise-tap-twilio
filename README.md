@@ -10,30 +10,41 @@ This is a [PipelineWise](https://transferwise.github.io/pipelinewise) compatible
 
 This tap:
 
-- Pulls raw data from the [twilio Advertiser API]([xxx](https://support.twilio.com/s/advertiser-api-documentation))
 - Extracts the following resources:
- - [accounts](https://www.twilio.com/docs/usage/api/account#read-multiple-account-resources)
- - [addresses](https://www.twilio.com/docs/usage/api/address#read-multiple-address-resources)
- - [dependent_phone_numbers](https://www.twilio.com/docs/usage/api/address?code-sample=code-list-dependent-pns-subresources&code-language=curl&code-sdk-version=json#instance-subresources)
- - [applications](https://www.twilio.com/docs/usage/api/applications#read-multiple-application-resources)
- - [available_phone_number_countries](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#read-a-list-of-countries)
- - [available_phone_numbers_local](https://www.twilio.com/docs/phone-numbers/api/availablephonenumberlocal-resource#read-multiple-availablephonenumberlocal-resources)
- - [available_phone_numbers_mobile](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-mobile-resource#read-multiple-availablephonenumbermobile-resources)
- - [available_phone_numbers_toll_free](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-tollfree-resource#read-multiple-availablephonenumbertollfree-resources)
- - [incoming_phone_numbers](https://www.twilio.com/docs/phone-numbers/api/incomingphonenumber-resource#read-multiple-incomingphonenumber-resources)
- - [keys](https://www.twilio.com/docs/usage/api/keys#read-a-key-resource)
- - [calls](https://www.twilio.com/docs/sms/api/message-resource#read-multiple-message-resources)
- - [conferences](https://www.twilio.com/docs/voice/api/conference-resource#read-multiple-conference-resources)
- - [conference_participants](https://www.twilio.com/docs/voice/api/conference-participant-resource#read-multiple-participant-resources)
- - [outgoing_caller_ids](https://www.twilio.com/docs/voice/api/outgoing-caller-ids#outgoingcallerids-list-resource)
- - [recordings](https://www.twilio.com/docs/voice/api/recording#read-multiple-recording-resources)
- - [transcriptions](https://www.twilio.com/docs/voice/api/recording-transcription?code-sample=code-read-list-all-transcriptions&code-language=curl&code-sdk-version=json#read-multiple-transcription-resources)
- - [queues](https://www.twilio.com/docs/voice/api/queue-resource#read-multiple-queue-resources)
- - [message_media](https://www.twilio.com/docs/sms/api/media-resource#read-multiple-media-resources)
- - [usage_records](https://www.twilio.com/docs/usage/api/usage-record#read-multiple-usagerecord-resources)
- - [usage_triggers](https://www.twilio.com/docs/usage/api/usage-trigger#read-multiple-usagetrigger-resources)
- - [alerts](https://www.twilio.com/docs/usage/monitor-alert#read-multiple-alert-resources) 
-
+  - [accounts](https://www.twilio.com/docs/usage/api/account#read-multiple-account-resources)
+  - [addresses](https://www.twilio.com/docs/usage/api/address#read-multiple-address-resources)
+  - [dependent_phone_numbers](https://www.twilio.com/docs/usage/api/address?code-sample=code-list-dependent-pns-subresources&code-language=curl&code-sdk-version=json#instance-subresources)
+  - [applications](https://www.twilio.com/docs/usage/api/applications#read-multiple-application-resources)
+  - [available_phone_number_countries](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-resource#read-a-list-of-countries)
+  - [available_phone_numbers_local](https://www.twilio.com/docs/phone-numbers/api/availablephonenumberlocal-resource#read-multiple-availablephonenumberlocal-resources)
+  - [available_phone_numbers_mobile](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-mobile-resource#read-multiple-availablephonenumbermobile-resources)
+  - [available_phone_numbers_toll_free](https://www.twilio.com/docs/phone-numbers/api/availablephonenumber-tollfree-resource#read-multiple-availablephonenumbertollfree-resources)
+  - [incoming_phone_numbers](https://www.twilio.com/docs/phone-numbers/api/incomingphonenumber-resource#read-multiple-incomingphonenumber-resources)
+  - [keys](https://www.twilio.com/docs/usage/api/keys#read-a-key-resource)
+  - [calls](https://www.twilio.com/docs/sms/api/message-resource#read-multiple-message-resources)
+  - [conferences](https://www.twilio.com/docs/voice/api/conference-resource#read-multiple-conference-resources)
+  - [conference_participants](https://www.twilio.com/docs/voice/api/conference-participant-resource#read-multiple-participant-resources)
+  - [outgoing_caller_ids](https://www.twilio.com/docs/voice/api/outgoing-caller-ids#outgoingcallerids-list-resource)
+  - [recordings](https://www.twilio.com/docs/voice/api/recording#read-multiple-recording-resources)
+  - [transcriptions](https://www.twilio.com/docs/voice/api/recording-transcription?code-sample=code-read-list-all-transcriptions&code-language=curl&code-sdk-version=json#read-multiple-transcription-resources)
+  - [queues](https://www.twilio.com/docs/voice/api/queue-resource#read-multiple-queue-resources)
+  - [message_media](https://www.twilio.com/docs/sms/api/media-resource#read-multiple-media-resources)
+  - [alerts](https://www.twilio.com/docs/usage/monitor-alert#read-multiple-alert-resources) 
+- Extracts TaskRouter resources:
+  - [workspaces](https://www.twilio.com/docs/taskrouter/api/workspace#list-all-workspaces)
+  - [activities](https://www.twilio.com/docs/taskrouter/api/activity#read-multiple-activity-resources)
+  - [events](https://www.twilio.com/docs/taskrouter/api/event#list-all-events)
+  - [tasks](https://www.twilio.com/docs/taskrouter/api/task#read-multiple-task-resources)
+  - [task_channels](https://www.twilio.com/docs/taskrouter/api/task-channel#read-multiple-taskchannel-resources)
+  - [task_queues](https://www.twilio.com/docs/taskrouter/api/task-queue#action-list)
+  - [cumulative_statistics](https://www.twilio.com/docs/taskrouter/api/taskqueue-statistics#taskqueue-cumulative-statistics)
+  - [workers](https://www.twilio.com/docs/taskrouter/api/worker#read-multiple-worker-resources)
+  - [worker_channels](https://www.twilio.com/docs/taskrouter/api/worker-channel#read-multiple-workerchannel-resources)
+  - [workflows](https://www.twilio.com/docs/taskrouter/api/workflow#read-multiple-workflow-resources)
+- Has logic to extract the following data, but cannot, because these resources are 1 level deeper:
+  - [usage_records](https://www.twilio.com/docs/usage/api/usage-record#read-multiple-usagerecord-resources)
+  - [usage_triggers](https://www.twilio.com/docs/usage/api/usage-trigger#read-multiple-usagetrigger-resources)
+ 
 - Outputs the schema for each resource
 - Incrementally pulls data based on the input state
 
@@ -206,6 +217,84 @@ This tap:
 - Replication strategy: INCREMENTAL
 - Transformations: none
 
+### TaskRouter Endpoints:
+
+[workspaces](https://www.twilio.com/docs/taskrouter/api/workspace#list-all-workspaces)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[activities](https://www.twilio.com/docs/taskrouter/api/activity#read-multiple-activity-resources)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/Activities
+- Parent: workspaces
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[events](https://www.twilio.com/docs/taskrouter/api/event#list-all-events)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/Events
+- Parent: workspaces
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[tasks](https://www.twilio.com/docs/taskrouter/api/task#read-multiple-task-resources)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/Tasks
+- Parent: workspaces
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[task_channels](https://www.twilio.com/docs/taskrouter/api/task-channel#read-multiple-taskchannel-resources)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/TaskChannels
+- Parent: workspaces
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[task_queues](https://www.twilio.com/docs/taskrouter/api/task-queue#action-list)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/TaskQueues
+- Parent: workspaces
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[cumulative_statistics](https://www.twilio.com/docs/taskrouter/api/taskqueue-statistics#taskqueue-cumulative-statistics)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/TaskQueues/{ParentId}/CumulativeStatistics
+- Parent: task_queues
+- Replication strategy: FULL_TABLE
+- Transformations: none
+
+
+[workers](https://www.twilio.com/docs/taskrouter/api/worker#read-multiple-worker-resources)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/Workers
+- Parent: workspaces
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[channels](https://www.twilio.com/docs/taskrouter/api/worker-channel#read-multiple-workerchannel-resources)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/Workers/{ParentId}/Channels
+- Parent: workers
+- Primary key fields: sid
+- Replication strategy: FULL_TABLE
+- Transformations: none
+
+
+[workflows](https://www.twilio.com/docs/taskrouter/api/workflow#read-multiple-workflow-resources)
+- Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/Workflows
+- Parent: workspaces
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
 
 ## Authentication
 This tap authenticates to the Twilio API using Basic Auth.
