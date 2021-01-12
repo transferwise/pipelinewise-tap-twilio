@@ -470,7 +470,7 @@ STREAMS = {
             'roles': {
                 'api_url': 'https://chat.twilio.com',
                 'api_version': 'v2',
-                'path': 'Services/{ParentId}/Channels/{ParentId}/Roles',
+                'path': 'Services/{ParentId}/Roles',
                 'data_key': 'roles',
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL',
@@ -491,6 +491,8 @@ STREAMS = {
                 'params': {},
                 'pagination': 'root',
                 'children': {
+                    # pylint: disable=line-too-long
+                    # Reference: https://www.twilio.com/docs/chat/rest/member-resource?code-sample=code-read-multiple-member-resources
                     'members': {
                         'api_url': 'https://chat.twilio.com',
                         'api_version': 'v2',
