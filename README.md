@@ -41,7 +41,7 @@ This tap:
   - [workers](https://www.twilio.com/docs/taskrouter/api/worker#read-multiple-worker-resources)
   - [worker_channels](https://www.twilio.com/docs/taskrouter/api/worker-channel#read-multiple-workerchannel-resources)
   - [workflows](https://www.twilio.com/docs/taskrouter/api/workflow#read-multiple-workflow-resources)
-- Extracts Programmable Chat resources:
+- Extracts Programmable Chat resources (`members` and `chat_messages` are `FULL_TABLE` synced, so take care syncing them, they result in a lot of request/data):
   - [services](https://www.twilio.com/docs/chat/rest/service-resource#read-multiple-service-resources)
   - [roles](https://www.twilio.com/docs/chat/rest/role-resource#read-multiple-role-resources)
   - [chat_channels](https://www.twilio.com/docs/chat/rest/channel-resource#read-multiple-channel-resources)
