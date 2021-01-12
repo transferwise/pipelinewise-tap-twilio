@@ -449,6 +449,86 @@ STREAMS = {
                 'replication_keys': ['date_updated'],
                 'params': {},
                 'pagination': 'root',
+            },
+        },
+    },
+    # pylint: disable=line-too-long
+    # Reference: https://www.twilio.com/docs/chat/rest/service-resource#read-multiple-service-resources
+    'services': {
+        'api_url': 'https://chat.twilio.com',
+        'api_version': 'v2',
+        'path': 'Services',
+        'data_key': 'services',
+        'key_properties': ['sid'],
+        'replication_method': 'INCREMENTAL',
+        'replication_keys': ['date_updated'],
+        'params': {},
+        'pagination': 'root',
+        'children': {
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/chat/rest/role-resource#read-multiple-role-resources
+            'roles': {
+                'api_url': 'https://chat.twilio.com',
+                'api_version': 'v2',
+                'path': 'Services/{ParentId}/Roles',
+                'data_key': 'roles',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root'
+            },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/chat/rest/channel-resource#read-multiple-channel-resources
+            'chat_channels': {
+                'api_url': 'https://chat.twilio.com',
+                'api_version': 'v2',
+                'path': 'Services/{ParentId}/Channels',
+                'data_key': 'channels',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root',
+                'children': {
+                    # pylint: disable=line-too-long
+                    # Reference: https://www.twilio.com/docs/chat/rest/member-resource?code-sample=code-read-multiple-member-resources
+                    'members': {
+                        'api_url': 'https://chat.twilio.com',
+                        'api_version': 'v2',
+                        'path': 'Services/{ParentId}/Channels/{ParentId}/Members',
+                        'data_key': 'members',
+                        'key_properties': ['sid'],
+                        'replication_method': 'FULL_TABLE',
+                        'params': {},
+                        'pagination': 'root'
+                    },
+                    # pylint: disable=line-too-long
+                    # Reference: https://www.twilio.com/docs/chat/rest/message-resource#read-multiple-message-resources
+                    'chat_messages': {
+                        'api_url': 'https://chat.twilio.com',
+                        'api_version': 'v2',
+                        'path': 'Services/{ParentId}/Channels/{ParentId}/Messages',
+                        'data_key': 'messages',
+                        'key_properties': ['sid'],
+                        'replication_method': 'FULL_TABLE',
+                        'params': {},
+                        'pagination': 'root'
+                    }
+                }
+            },
+            # pylint: disable=line-too-long
+            # Reference: https://www.twilio.com/docs/chat/rest/user-resource#read-multiple-user-resources
+            'users': {
+                'api_url': 'https://chat.twilio.com',
+                'api_version': 'v2',
+                'path': 'Services/{ParentId}/Users',
+                'data_key': 'users',
+                'key_properties': ['sid'],
+                'replication_method': 'INCREMENTAL',
+                'replication_keys': ['date_updated'],
+                'params': {},
+                'pagination': 'root'
             }
         }
     }

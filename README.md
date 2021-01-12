@@ -41,6 +41,14 @@ This tap:
   - [workers](https://www.twilio.com/docs/taskrouter/api/worker#read-multiple-worker-resources)
   - [worker_channels](https://www.twilio.com/docs/taskrouter/api/worker-channel#read-multiple-workerchannel-resources)
   - [workflows](https://www.twilio.com/docs/taskrouter/api/workflow#read-multiple-workflow-resources)
+- Extracts Programmable Chat resources (`members` and `chat_messages` are `FULL_TABLE` synced, so take care syncing them, they result in a lot of request/data):
+  - [services](https://www.twilio.com/docs/chat/rest/service-resource#read-multiple-service-resources)
+  - [roles](https://www.twilio.com/docs/chat/rest/role-resource#read-multiple-role-resources)
+  - [chat_channels](https://www.twilio.com/docs/chat/rest/channel-resource#read-multiple-channel-resources)
+  - [members](https://www.twilio.com/docs/chat/rest/member-resource?code-sample=code-read-multiple-member-resources)
+  - [chat_messages](https://www.twilio.com/docs/chat/rest/message-resource#read-multiple-message-resources)
+  - [users](https://www.twilio.com/docs/chat/rest/user-resource#read-multiple-user-resources)
+ 
 - Has logic to extract the following data, but cannot, because these resources are 1 level deeper:
   - [usage_records](https://www.twilio.com/docs/usage/api/usage-record#read-multiple-usagerecord-resources)
   - [usage_triggers](https://www.twilio.com/docs/usage/api/usage-trigger#read-multiple-usagetrigger-resources)
@@ -295,6 +303,55 @@ This tap:
 - Primary key fields: sid
 - Replication strategy: INCREMENTAL
 - Transformations: none
+
+### Programmable Chat Endpoints:
+
+[services](https://www.twilio.com/docs/chat/rest/service-resource#read-multiple-service-resources)
+- Endpoint: https://chat.twilio.com/v2/Services
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[roles](https://www.twilio.com/docs/chat/rest/role-resource#read-multiple-role-resources)
+- Endpoint: https://chat.twilio.com/v2/Services/{ParentId}/Roles
+- Parent: services
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[chat_channels](https://www.twilio.com/docs/chat/rest/channel-resource#read-multiple-channel-resources)
+- Endpoint: https://chat.twilio.com/v2/Services/{ParentId}/Channels
+- Parent: services
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
+
+[members](https://www.twilio.com/docs/chat/rest/member-resource?code-sample=code-read-multiple-member-resources)
+- Endpoint: https://chat.twilio.com/v2/Services/{ParentId}/Channels/{ParentId}/Members
+- Parent: workspaces
+- Primary key fields: sid
+- Replication strategy: FULL_TABLE
+- Transformations: none
+
+
+[chat_messages](https://www.twilio.com/docs/chat/rest/message-resource#read-multiple-message-resources)
+- Endpoint: https://chat.twilio.com/v2/Services/{ParentId}/Channels/{ParentId}/Messages
+- Parent: workspaces
+- Primary key fields: sid
+- Replication strategy: FULL_TABLE
+- Transformations: none
+
+
+[users](https://www.twilio.com/docs/chat/rest/user-resource#read-multiple-user-resources)
+- Endpoint: https://chat.twilio.com/v2/Services/{ParentId}/Users
+- Parent: services
+- Primary key fields: sid
+- Replication strategy: INCREMENTAL
+- Transformations: none
+
 
 ## Authentication
 This tap authenticates to the Twilio API using Basic Auth.
