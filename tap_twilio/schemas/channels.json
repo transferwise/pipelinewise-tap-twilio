@@ -11,7 +11,7 @@
     "assigned_tasks": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "available": {
@@ -23,13 +23,13 @@
     "available_capacity_percentage": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "configured_capacity": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "date_created": {

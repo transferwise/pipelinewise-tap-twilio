@@ -534,8 +534,6 @@ STREAMS = {
 
 
 # De-nest children nodes for Discovery mode
-
-
 def flatten_streams():
     flat_streams = {}
     # Loop through parents
