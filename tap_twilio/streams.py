@@ -350,7 +350,7 @@ STREAMS = {
         'replication_method': 'INCREMENTAL',
         'replication_keys': ['date_updated'],
         'params': {},
-        'pagination': 'root',
+        'pagination': 'meta',
         'children': {
             # pylint: disable=line-too-long
             # Reference: https://www.twilio.com/docs/taskrouter/api/activity#read-multiple-activity-resources
@@ -363,7 +363,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'root',
+                'pagination': 'meta',
             },
             # pylint: disable=line-too-long
             # Reference: https://www.twilio.com/docs/taskrouter/api/event#list-all-events
@@ -376,7 +376,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['event_date'],
                 'params': {},
-                'pagination': 'root',
+                'pagination': 'meta',
             },
             # pylint: disable=line-too-long
             # Reference: https://www.twilio.com/docs/taskrouter/api/task#read-multiple-task-resources
@@ -389,7 +389,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'root',
+                'pagination': 'meta',
             },
             # pylint: disable=line-too-long
             # Reference: https://www.twilio.com/docs/taskrouter/api/task-channel#read-multiple-taskchannel-resources
@@ -402,7 +402,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'root',
+                'pagination': 'meta',
             },
             # pylint: disable=line-too-long
             # Reference: https://www.twilio.com/docs/taskrouter/api/task-queue#action-list
@@ -415,7 +415,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'root',
+                'pagination': 'meta',
                 'children': {
                     # pylint: disable=line-too-long
                     # Reference: https://www.twilio.com/docs/taskrouter/api/taskqueue-statistics#taskqueue-cumulative-statistics
@@ -427,7 +427,7 @@ STREAMS = {
                         'key_properties': [],
                         'replication_method': 'FULL_TABLE',
                         'params': {},
-                        'pagination': 'root'
+                        'pagination': 'meta'
                     }
                 }
             },
@@ -442,7 +442,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'root',
+                'pagination': 'meta',
                 'children': {
                     # pylint: disable=line-too-long
                     # Reference: https://www.twilio.com/docs/taskrouter/api/worker-channel#read-multiple-workerchannel-resources
@@ -454,7 +454,7 @@ STREAMS = {
                         'key_properties': ["sid"],
                         'replication_method': 'FULL_TABLE',
                         'params': {},
-                        'pagination': 'root'
+                        'pagination': 'meta'
                     }
                 }
             },
@@ -469,7 +469,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'root',
+                'pagination': 'meta',
             },
         },
     },
@@ -484,7 +484,7 @@ STREAMS = {
         'replication_method': 'INCREMENTAL',
         'replication_keys': ['date_updated'],
         'params': {},
-        'pagination': 'root',
+        'pagination': 'meta',
         'children': {
             # pylint: disable=line-too-long
             # Reference: https://www.twilio.com/docs/chat/rest/role-resource#read-multiple-role-resources
@@ -497,7 +497,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'root'
+                'pagination': 'meta'
             },
             # pylint: disable=line-too-long
             # Reference: https://www.twilio.com/docs/chat/rest/channel-resource#read-multiple-channel-resources
@@ -510,7 +510,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'root',
+                'pagination': 'meta',
                 'children': {
                     # pylint: disable=line-too-long
                     # Reference: https://www.twilio.com/docs/chat/rest/member-resource?code-sample=code-read-multiple-member-resources
@@ -522,7 +522,7 @@ STREAMS = {
                         'key_properties': ['sid'],
                         'replication_method': 'FULL_TABLE',
                         'params': {},
-                        'pagination': 'root'
+                        'pagination': 'meta'
                     },
                     # pylint: disable=line-too-long
                     # Reference: https://www.twilio.com/docs/chat/rest/message-resource#read-multiple-message-resources
@@ -534,7 +534,7 @@ STREAMS = {
                         'key_properties': ['sid'],
                         'replication_method': 'FULL_TABLE',
                         'params': {},
-                        'pagination': 'root'
+                        'pagination': 'meta'
                     }
                 }
             },
@@ -549,7 +549,7 @@ STREAMS = {
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
                 'params': {},
-                'pagination': 'root'
+                'pagination': 'meta'
             }
         }
     }
