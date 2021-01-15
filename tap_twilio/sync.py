@@ -225,7 +225,7 @@ def sync_endpoint(
             # Need URL querystring for 1st page; subsequent pages provided by next_url
             # querystring: Squash query params into string
             querystring = None
-            if page == 1 and not params == {} and params is not None:
+            if page == 0 and not params == {} and params is not None:
                querystring = '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
                # Replace <parent_id> in child stream params
                if parent_id:
