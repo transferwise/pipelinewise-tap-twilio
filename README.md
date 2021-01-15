@@ -26,6 +26,8 @@ This tap:
   - [conference_participants](https://www.twilio.com/docs/voice/api/conference-participant-resource#read-multiple-participant-resources)
   - [outgoing_caller_ids](https://www.twilio.com/docs/voice/api/outgoing-caller-ids#outgoingcallerids-list-resource)
   - [recordings](https://www.twilio.com/docs/voice/api/recording#read-multiple-recording-resources)
+  - [usage_records](https://www.twilio.com/docs/usage/api/usage-record#read-multiple-usagerecord-resources)
+  - [usage_triggers](https://www.twilio.com/docs/usage/api/usage-trigger#read-multiple-usagetrigger-resources)
   - [transcriptions](https://www.twilio.com/docs/voice/api/recording-transcription?code-sample=code-read-list-all-transcriptions&code-language=curl&code-sdk-version=json#read-multiple-transcription-resources)
   - [queues](https://www.twilio.com/docs/voice/api/queue-resource#read-multiple-queue-resources)
   - [message_media](https://www.twilio.com/docs/sms/api/media-resource#read-multiple-media-resources)
@@ -48,10 +50,6 @@ This tap:
   - [members](https://www.twilio.com/docs/chat/rest/member-resource?code-sample=code-read-multiple-member-resources)
   - [chat_messages](https://www.twilio.com/docs/chat/rest/message-resource#read-multiple-message-resources)
   - [users](https://www.twilio.com/docs/chat/rest/user-resource#read-multiple-user-resources)
- 
-- Has logic to extract the following data, but cannot, because these resources are 1 level deeper:
-  - [usage_records](https://www.twilio.com/docs/usage/api/usage-record#read-multiple-usagerecord-resources)
-  - [usage_triggers](https://www.twilio.com/docs/usage/api/usage-trigger#read-multiple-usagetrigger-resources)
  
 - Outputs the schema for each resource
 - Incrementally pulls data based on the input state
