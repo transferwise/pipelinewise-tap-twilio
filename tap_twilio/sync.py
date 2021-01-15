@@ -251,7 +251,10 @@ def sync_endpoint(
                 break  # No data results
 
             # Get pagination details
-            next_url = data.get('meta', {}).get('next_page_url')
+            next_url = data.get('meta', {}).get('next_page_url') if endpoint_config.get("pagination") == "meta" else data.get('next_page_uri')
+            if next_url and not next_url.startswith('http'):
+                next_url = '{}{}'.format(endpoint_config.get('api_url'), next_url)
+
             api_total = 0
 
             if not data or data is None:
@@ -330,8 +333,10 @@ def sync_endpoint(
 
                             # For some resources, the name of the stream is the key for the child_paths
                             # but for others', the data_key contains the correct key
+                            child_key = child_endpoint_config.get('parent_subresource_key', child_endpoint_config.get('data_key'))
+
                             child_path = child_paths.get(child_stream_name,
-                                                         child_paths.get(child_endpoint_config.get('data_key', None)))
+                                                         child_paths.get(child_key))
 
                             child_bookmark_field = next(iter(child_endpoint_config.get(
                                 'replication_keys', [])), None)
