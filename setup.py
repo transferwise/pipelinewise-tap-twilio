@@ -8,6 +8,7 @@ with open("README.md", "r") as fh:
 setup(name='pipelinewise-tap-twilio',
       version='1.0.0',
       description='Singer.io tap for extracting data from the Twilio API - PipelineWise compatible',
+      long_description=long_description,
       author='TransferWise',
       url='https://github.com/transferwise/pipelinewise-tap-twilio',
       classifiers=[
