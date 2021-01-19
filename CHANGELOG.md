@@ -1,3 +1,8 @@
+1.0.1 (2021-01-19)
+-------------------
+- Fix UsageRecords and UsageTriggers schemas
+- Fix pagination for Account subresources
+
 1.0.0 (2021-01-12)
 -------------------
 
