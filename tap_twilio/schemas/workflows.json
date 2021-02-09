@@ -17,7 +17,7 @@
     "configuration": {
       "type": [
         "null",
-        "string"
+        "object"
       ]
     },
     "date_created": {

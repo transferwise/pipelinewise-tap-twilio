@@ -35,7 +35,7 @@
     "attributes": {
       "type": [
         "null",
-        "string"
+        "object"
       ]
     },
     "type": {
