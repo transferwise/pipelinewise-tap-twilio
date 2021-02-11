@@ -228,7 +228,7 @@ This tap:
 [workspaces](https://www.twilio.com/docs/taskrouter/api/workspace#list-all-workspaces)
 - Endpoint: https://taskrouter.twilio.com/v1/Workspaces
 - Primary key fields: sid
-- Replication strategy: INCREMENTAL
+- Replication strategy: FULL_TABLE
 - Transformations: none
 
 
@@ -268,7 +268,7 @@ This tap:
 - Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/TaskQueues
 - Parent: workspaces
 - Primary key fields: sid
-- Replication strategy: INCREMENTAL
+- Replication strategy: FULL_TABLE
 - Transformations: none
 
 
@@ -283,7 +283,7 @@ This tap:
 - Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/Workers
 - Parent: workspaces
 - Primary key fields: sid
-- Replication strategy: INCREMENTAL
+- Replication strategy: FULL_TABLE
 - Transformations: none
 
 
@@ -299,7 +299,7 @@ This tap:
 - Endpoint: https://taskrouter.twilio.com/v1/Workspaces/{ParentId}/Workflows
 - Parent: workspaces
 - Primary key fields: sid
-- Replication strategy: INCREMENTAL
+- Replication strategy: FULL_TABLE
 - Transformations: none
 
 ### Programmable Chat Endpoints:
