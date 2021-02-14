@@ -1,4 +1,5 @@
 import singer
+import json
 
 LOGGER = singer.get_logger()
 
@@ -20,8 +21,30 @@ def subresources_to_array(data_dict, data_key):
     return new_dict
 
 
-# Run all transforms: ...
-def transform_json(data_dict, data_key):
-    transformed_dict = subresources_to_array(data_dict, data_key)
+def deserialise_jsons_in_dict(data_dict, jsons_keys):
+    for jsons_key in jsons_keys:
+        if jsons_key in data_dict:
+            try:
+                data_dict[jsons_key] = json.loads(data_dict[jsons_key])
+            except json.JSONDecodeError:
+                data_dict[jsons_key] = {'invalid_json': data_dict[jsons_key]}
 
-    return transformed_dict[data_key]
+    return data_dict
+
+
+def deserialise_jsons(data, jsons_keys):
+    if jsons_keys:
+        if isinstance(data, list):
+            data = [deserialise_jsons_in_dict(data_dict, jsons_keys) for data_dict in data]
+        elif isinstance(data, dict):
+            data = deserialise_jsons_in_dict(data, jsons_keys)
+
+    return data
+
+
+# Run all transforms: ...
+def transform_json(data_dict, data_key, jsons_keys):
+    transformed_dict = subresources_to_array(data_dict, data_key)
+    transformed_dict_data = deserialise_jsons(transformed_dict[data_key], jsons_keys)
+
+    return transformed_dict_data

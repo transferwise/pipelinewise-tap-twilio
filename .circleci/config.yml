@@ -20,7 +20,9 @@ jobs:
            pylint tap_twilio -d C,W,unexpected-keyword-arg,duplicate-code,too-many-arguments,too-many-locals,too-many-nested-blocks,useless-object-inheritance,no-self-argument,raising-non-exception,no-member
       - run:
           name: 'Unit Tests'
-          command: echo "No unit tests :("
+          command: |
+            . venv/bin/activate
+            pytest tests/unit
 
 workflows:
   version: 2

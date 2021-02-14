@@ -1,5 +1,6 @@
 import math
 from datetime import timedelta
+import sys
 
 import singer
 from singer import metrics, metadata, Transformer, utils
@@ -178,6 +179,7 @@ def sync_endpoint(
     bookmark_query_field_from = endpoint_config.get('bookmark_query_field_from')
     bookmark_query_field_to = endpoint_config.get('bookmark_query_field_to')
     data_key = endpoint_config.get('data_key', 'data')
+    stringified_json_keys = endpoint_config.get('stringified_json_keys')
     id_fields = endpoint_config.get('key_properties')
 
     start_window, end_window, date_window_days, now_datetime, last_datetime, max_bookmark_value = \
@@ -268,20 +270,20 @@ def sync_endpoint(
             data_dict = {}
             if data_key in data:
                 if isinstance(data[data_key], list):
-                    transformed_data = transform_json(data, data_key)
+                    transformed_data = transform_json(data, data_key, stringified_json_keys)
                 elif isinstance(data[data_key], dict):
                     data_list.append(data[data_key])
                     data_dict[data_key] = data_list
-                    transformed_data = transform_json(data_dict, data_key)
+                    transformed_data = transform_json(data_dict, data_key, stringified_json_keys)
             else:  # data_key not in data
                 if isinstance(data, list):
                     data_list = data
                     data_dict[data_key] = data_list
-                    transformed_data = transform_json(data_dict, data_key)
+                    transformed_data = transform_json(data_dict, data_key, stringified_json_keys)
                 elif isinstance(data, dict):
                     data_list.append(data)
                     data_dict[data_key] = data_list
-                    transformed_data = transform_json(data_dict, data_key)
+                    transformed_data = transform_json(data_dict, data_key, stringified_json_keys)
 
             # Process records and get the max_bookmark_value and record_count for the set of records
             if stream_name in selected_streams:

@@ -388,6 +388,7 @@ STREAMS = {
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
+                'stringified_json_keys': ['attributes'],
                 'params': {},
                 'pagination': 'meta',
             },
@@ -468,6 +469,7 @@ STREAMS = {
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
+                'stringified_json_keys': ['configuration'],
                 'params': {},
                 'pagination': 'meta',
             },
@@ -509,6 +511,7 @@ STREAMS = {
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['date_updated'],
+                'stringified_json_keys': ['attributes'],
                 'params': {},
                 'pagination': 'meta',
                 'children': {
