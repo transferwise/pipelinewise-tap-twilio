@@ -44,6 +44,20 @@ def test_deserialise_jsons_in_dict_with_invalid_json_string():
     }
 
 
+def test_deserialise_jsons_in_dict_with_objects():
+    """JSON string keys which already objects should remain objects"""
+    dict_with_json_string = {
+        'non-jsons': 1,
+        'jsons': {'hey': 'this is already an object already'}
+    }
+    assert deserialise_jsons_in_dict(dict_with_json_string, ['jsons']) == {
+        'non-jsons': 1,
+        'jsons': {
+            'hey': 'this is already an object already'
+        }
+    }
+
+
 def test_deserialise_jsons_in_dict_with_multiple_keys():
     """JSON strings in dictionary should NOT be converted to objects if the key not exists"""
     dict_with_json_string = {
@@ -94,21 +108,56 @@ def test_transform_list_with_jsons():
         'my_data': [
             {
                 'key1': '{"dummy": "foo1"}',
-                'key2': 'value2',
+                'key2': 'value1',
             },
             {
                 'key1': '{"dummy": "foo2"}',
+                'key2': 'value2',
+            },
+            {
+                'key1': '[1, 2, 3, 4, 5]',
+                'key2': 'value3',
+            },
+            # Objects should remain object
+            {
+                'key1': {"dummy": "foo4"},
                 'key2': 'value4',
+            },
+            # List should remain list
+            {
+                'key1': [1, 2, 3, 4, 5],
+                'key2': 'value5',
+            },
+            # Invalid JSON should be converted to valid JSON using a custom error structure
+            {
+                'key1': 'THIS-IS-INVALID-JSON',
+                'key2': 'value6',
             }
         ]
     }
     assert transform_json(data_dict, data_key='my_data', jsons_keys=['key1']) == [
         {
             'key1': {'dummy': "foo1"},
-            'key2': 'value2',
+            'key2': 'value1',
         },
         {
             'key1': {'dummy': 'foo2'},
+            'key2': 'value2',
+        },
+        {
+            'key1': [1, 2, 3, 4, 5],
+            'key2': 'value3',
+        },
+        {
+            'key1': {'dummy': 'foo4'},
             'key2': 'value4',
+        },
+        {
+            'key1': [1, 2, 3, 4, 5],
+            'key2': 'value5',
+        },
+        {
+            'key1': {'invalid_json': 'THIS-IS-INVALID-JSON'},
+            'key2': 'value6',
         }
     ]
