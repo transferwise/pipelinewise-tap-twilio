@@ -106,58 +106,52 @@ def test_transform_list_with_jsons():
     data_dict = {
         'meta': 'foo',
         'my_data': [
+            # Stringified object should be converted to object
             {
                 'key1': '{"dummy": "foo1"}',
                 'key2': 'value1',
             },
-            {
-                'key1': '{"dummy": "foo2"}',
-                'key2': 'value2',
-            },
+            # Stringified array should be converted to list
             {
                 'key1': '[1, 2, 3, 4, 5]',
-                'key2': 'value3',
+                'key2': 'value2',
             },
             # Objects should remain object
             {
-                'key1': {"dummy": "foo4"},
-                'key2': 'value4',
+                'key1': {"dummy": "foo3"},
+                'key2': 'value3',
             },
             # List should remain list
             {
                 'key1': [1, 2, 3, 4, 5],
-                'key2': 'value5',
+                'key2': 'value4',
             },
             # Invalid JSON should be converted to valid JSON using a custom error structure
             {
-                'key1': 'THIS-IS-INVALID-JSON',
-                'key2': 'value6',
+                'key1': 'THIS IS AN INVALID JSON',
+                'key2': 'value5',
             }
         ]
     }
     assert transform_json(data_dict, data_key='my_data', jsons_keys=['key1']) == [
         {
-            'key1': {'dummy': "foo1"},
+            'key1': {'dummy': 'foo1'},
             'key2': 'value1',
         },
         {
-            'key1': {'dummy': 'foo2'},
+            'key1': [1, 2, 3, 4, 5],
             'key2': 'value2',
         },
         {
-            'key1': [1, 2, 3, 4, 5],
+            'key1': {'dummy': 'foo3'},
             'key2': 'value3',
         },
         {
-            'key1': {'dummy': 'foo4'},
+            'key1': [1, 2, 3, 4, 5],
             'key2': 'value4',
         },
         {
-            'key1': [1, 2, 3, 4, 5],
+            'key1': {'invalid_json': 'THIS IS AN INVALID JSON'},
             'key2': 'value5',
-        },
-        {
-            'key1': {'invalid_json': 'THIS-IS-INVALID-JSON'},
-            'key2': 'value6',
         }
     ]
