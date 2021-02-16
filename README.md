@@ -409,4 +409,19 @@ To set up authentication simply include your Twilio `account_sid` and `auth_toke
    Messages are written to standard output following the Singer specification.
    The resultant stream of JSON data can be consumed by a Singer target.
 
+## To run tests
+
+1. Install python test dependencies in a virtual env and run nose unit and integration tests
+```
+  python3 -m venv venv
+  . venv/bin/activate
+  pip install --upgrade pip
+  pip install -e .[test]
+```
+
+2. To run unit tests:
+```
+  pytest tests/unit
+```
+
 ---

@@ -23,7 +23,8 @@
     "attributes": {
       "type": [
         "null",
-        "string"
+        "object",
+        "array"
       ]
     },
     "date_created": {
