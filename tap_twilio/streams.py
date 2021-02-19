@@ -377,6 +377,7 @@ STREAMS = {
                 'replication_keys': ['event_date'],
                 'bookmark_query_field_from': 'StartDate',
                 'synch_since_bookmark': True,
+                'stringified_json_keys': ['worker_attributes', 'task_attributes'],
                 'params': {},
                 'pagination': 'meta',
             },
