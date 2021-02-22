@@ -1,3 +1,9 @@
+1.1.0 (2021-02-22)
+-------------------
+- Transforms stringified JSONs to JSON objects
+- Enable streams to by synced since the last bookmark or start_date with query parameter
+- Get more fields for events stream
+
 1.0.2 (2021-01-21)
 -------------------
 - Fix publishing to PyPI
