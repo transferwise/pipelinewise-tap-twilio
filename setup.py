@@ -10,7 +10,7 @@ setup(name='pipelinewise-tap-twilio',
       description='Singer.io tap for extracting data from the Twilio API - PipelineWise compatible',
       long_description=long_description,
       long_description_content_type='text/markdown',
-      author='TransferWise',
+      author='Wise',
       url='https://github.com/transferwise/pipelinewise-tap-twilio',
       classifiers=[
           'License :: OSI Approved :: GNU Affero General Public License v3',
