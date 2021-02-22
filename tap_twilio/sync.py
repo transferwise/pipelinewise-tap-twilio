@@ -1,5 +1,5 @@
 import math
-from datetime import timedelta
+from datetime import timedelta, datetime
 import sys
 
 import singer
@@ -176,6 +176,7 @@ def sync_endpoint(
         parent_id=None,
         account_sid=None):
     static_params = endpoint_config.get('params', {})
+    synch_since_bookmark = endpoint_config.get('synch_since_bookmark')
     bookmark_query_field_from = endpoint_config.get('bookmark_query_field_from')
     bookmark_query_field_to = endpoint_config.get('bookmark_query_field_to')
     data_key = endpoint_config.get('data_key', 'data')
@@ -207,6 +208,20 @@ def sync_endpoint(
         if bookmark_query_field_from and bookmark_query_field_to:
             params[bookmark_query_field_from] = strftime(start_window)[:10]  # truncate date
             params[bookmark_query_field_to] = strftime(end_window)[:10]  # truncate date
+
+        if synch_since_bookmark and bookmark_query_field_from:
+            current_stream_bookmark_string = state.get('value', {}).get('bookmarks', {}).get(stream_name)
+
+            # if we have a bookmark for the given stream, use that one
+            if current_stream_bookmark_string is not None:
+                start_datetime = datetime.strptime(current_stream_bookmark_string,
+                                                                       '%Y-%m-%dT%H:%M:%S.%fZ')
+                start_datetime_string = start_datetime.strftime('%Y-%m-%dT%H:%M:%SZ')
+            # if don't, then take the start_date
+            else:
+                start_datetime_string = start_date
+            # assign the synching param to the parameters
+            params[bookmark_query_field_from] = start_datetime_string
 
         # pagination: loop thru all pages of data using next (if not None)
         page = 0

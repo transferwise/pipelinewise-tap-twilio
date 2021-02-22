@@ -375,6 +375,8 @@ STREAMS = {
                 'key_properties': ['sid'],
                 'replication_method': 'INCREMENTAL',
                 'replication_keys': ['event_date'],
+                'bookmark_query_field_from': 'StartDate',
+                'synch_since_bookmark': True,
                 'params': {},
                 'pagination': 'meta',
             },
