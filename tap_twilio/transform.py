@@ -27,15 +27,14 @@ def deserialise_jsons_in_dict(data_dict, jsons_keys):
         for key in data_dict.keys():
             data_dict[key] = deserialise_jsons_in_dict(data_dict[key], jsons_keys)
 
-        if isinstance(data_dict, dict):
-            for jsons_key in jsons_keys:
-                if jsons_key in data_dict:
-                    # Deserialise only string types
-                    if isinstance(data_dict[jsons_key], str):
-                        try:
-                            data_dict[jsons_key] = json.loads(data_dict[jsons_key])
-                        except json.JSONDecodeError:
-                            data_dict[jsons_key] = {'invalid_json': data_dict[jsons_key]}
+        for jsons_key in jsons_keys:
+            if jsons_key in data_dict:
+                # Deserialise only string types
+                if isinstance(data_dict[jsons_key], str):
+                    try:
+                        data_dict[jsons_key] = json.loads(data_dict[jsons_key])
+                    except json.JSONDecodeError:
+                        data_dict[jsons_key] = {'invalid_json': data_dict[jsons_key]}
 
     return data_dict
 
