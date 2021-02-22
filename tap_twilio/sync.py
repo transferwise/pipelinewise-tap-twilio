@@ -210,7 +210,7 @@ def sync_endpoint(
             params[bookmark_query_field_to] = strftime(end_window)[:10]  # truncate date
 
         if synch_since_bookmark and bookmark_query_field_from:
-            current_stream_bookmark_string = state.get('value', {}).get('bookmarks', {}).get(stream_name)
+            current_stream_bookmark_string = state.get('bookmarks', {}).get(stream_name)
 
             # if we have a bookmark for the given stream, use that one
             if current_stream_bookmark_string is not None:
