@@ -39,6 +39,37 @@
       ],
       "additionalProperties": false,
       "properties": {
+        "task_age": {
+          "type": [
+            "null",
+            "integer"
+          ]
+        },
+        "task_queue_entered_date": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "format": "date-time"
+        },
+        "task_queue_name": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "task_queue_sid": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "task_sid": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
         "worker_activity_name": {
           "type": [
             "null",
@@ -54,7 +85,8 @@
         "worker_attributes": {
           "type": [
             "null",
-            "string"
+            "object",
+            "array"
           ]
         },
         "worker_name": {
@@ -91,6 +123,13 @@
           "type": [
             "null",
             "string"
+          ]
+        },
+        "task_attributes": {
+          "type": [
+            "null",
+            "object",
+            "array"
           ]
         }
       }
