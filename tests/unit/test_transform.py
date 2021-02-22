@@ -155,3 +155,52 @@ def test_transform_list_with_jsons():
             'key2': 'value5',
         }
     ]
+
+
+def test_transform_list_with_subresource_json():
+    """JSON strings as sub resources should be transformed to objects"""
+    data_dict = {
+        'meta': 'foo',
+        'my_data': [
+            {
+                'key_1': {
+                    'toTransform': '{"dummy": "foo1"}',
+                    'alsoToTransform': '[1, 2, 3, 4, 5]'
+                },
+                'key_2': 'value_2',
+            }
+        ]
+    }
+    assert transform_json(data_dict, data_key='my_data', jsons_keys=['toTransform', 'alsoToTransform']) == [
+        {
+            'key_1': {
+                'toTransform': {'dummy': 'foo1'},
+                'alsoToTransform': [1, 2, 3, 4, 5]
+            },
+            'key_2': 'value_2',
+        }
+    ]
+
+
+def test_transform_dict_with_subresource_json():
+    """JSON strings as sub resources should be transformed to objects"""
+    data_dict = {
+        'meta': 'foo',
+        'my_data':
+            {
+                'key_1': {
+                    'toTransform': '{"dummy": "foo1"}',
+                    'alsoToTransform': '[1, 2, 3, 4, 5]'
+                },
+                'key_2': 'value_2',
+            }
+
+    }
+    assert transform_json(data_dict, data_key='my_data', jsons_keys=['toTransform', 'alsoToTransform']) == \
+        {
+            'key_1': {
+                'toTransform': {'dummy': 'foo1'},
+                'alsoToTransform': [1, 2, 3, 4, 5]
+            },
+            'key_2': 'value_2',
+        }
