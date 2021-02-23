@@ -1,3 +1,7 @@
+1.1.1 (2021-02-23)
+-------------------
+- Fix wrong JSON parsing of state.json
+
 1.1.0 (2021-02-22)
 -------------------
 - Transforms stringified JSONs to JSON objects

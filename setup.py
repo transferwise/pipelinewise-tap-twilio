@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='pipelinewise-tap-twilio',
-      version='1.1.0',
+      version='1.1.1',
       description='Singer.io tap for extracting data from the Twilio API - PipelineWise compatible',
       long_description=long_description,
       long_description_content_type='text/markdown',
