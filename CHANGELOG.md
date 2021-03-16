@@ -1,4 +1,4 @@
-1.1.2 (2021-03-12)
+1.1.2 (2021-03-16)
 -------------------
 - Fix missing elements for streams without ordered response
 
