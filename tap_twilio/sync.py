@@ -1,6 +1,6 @@
 import math
 from datetime import timedelta, datetime
-import sys
+from dateutil import parser
 
 import singer
 from singer import metrics, metadata, Transformer, utils
@@ -412,10 +412,14 @@ def sync_endpoint(
             page = page + 1
             # End page/batch - while next URL loop
 
-        # Update the state with the max_bookmark_value for the stream date window
+        # Update the state with the sooner of now_datetime or max_bookmark_value
+        # If we synced any entities which were created during the synchronization process, we save the start of the
+        # sync as bookmark, if all we synced was entities from before we started, we save the latest entity
         # Twilio API does not allow page/batch sorting; bookmark written for date window
         if bookmark_field:
-            write_bookmark(state, stream_name, max_bookmark_value)
+            max_bookmark_date_time = parser.parse(max_bookmark_value)
+            new_bookmark_date_time = sooner_date_time(max_bookmark_date_time, now_datetime)
+            write_bookmark(state, stream_name, new_bookmark_date_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'))
 
         # Increment date window and sum endpoint_total
         start_window = end_window
@@ -430,6 +434,11 @@ def sync_endpoint(
     # Return total_records (for all pages and date windows)
     return endpoint_total
 
+
+def sooner_date_time(date_time_1, date_time_2):
+    if date_time_1 < date_time_2:
+        return date_time_1
+    return date_time_2
 
 # Currently syncing sets the stream currently being delivered in the state.
 # If the integration is interrupted, this state property is used to identify
