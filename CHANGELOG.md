@@ -1,3 +1,7 @@
+1.1.2 (2021-03-12)
+-------------------
+- Fix missing elements for streams without ordered response
+
 1.1.1 (2021-02-23)
 -------------------
 - Fix wrong JSON parsing of state.json
