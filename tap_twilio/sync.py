@@ -335,7 +335,10 @@ def sync_endpoint(
                                 if id_field == 'id':
                                     parent_id_field = id_field
                                 i = i + 1
-                            parent_id = parent_id_field
+                            try:
+                                parent_id = record.get('parent_id_field')
+                            except:
+                                LOGGER.info("Error %s" % record)
 
                             # sync_endpoint for child
                             LOGGER.info(
