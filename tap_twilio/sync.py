@@ -331,12 +331,11 @@ def sync_endpoint(
                             # Set parent_id
                             for id_field in id_fields:
                                 if i == 0:
-                                    parent_id_field = id_field
+                                    record['parent_id_field'] = id_field
                                 if id_field == 'id':
-                                    parent_id_field = id_field
+                                    record['parent_id_field'] = id_field
                                 i = i + 1
-                            if record.get(parent_id_field):
-                                parent_id = record.get(parent_id_field)
+                            parent_id = record.get(parent_id_field)
 
                             # sync_endpoint for child
                             LOGGER.info(
