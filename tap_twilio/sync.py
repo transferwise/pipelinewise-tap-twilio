@@ -338,7 +338,7 @@ def sync_endpoint(
                             try:
                                 parent_id = record.get('parent_id_field')
                             except:
-                                LOGGER.info("Error %s" % record)
+                                LOGGER.error("NO PARENT ID -  %s" % record)
 
                             # sync_endpoint for child
                             LOGGER.info(
