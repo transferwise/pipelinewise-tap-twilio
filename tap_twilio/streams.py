@@ -281,7 +281,7 @@ STREAMS = {
                 'api_version': '2010-04-01',
                 'path': 'Accounts/{ParentId}/Usage.json',
                 'data_key': '',
-                'key_properties': [''],
+                'key_properties': [],
                 'replication_method': 'INCREMENTAL',  # Filter query
                 'replication_keys': ['end_date'],
                 'bookmark_query_field_from': 'StartDate',  # Daily
