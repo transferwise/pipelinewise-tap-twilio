@@ -1,5 +1,5 @@
-import singer
 import json
+import singer
 
 LOGGER = singer.get_logger()
 

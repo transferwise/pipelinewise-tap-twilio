@@ -18,7 +18,7 @@ def write_schema(catalog, stream_name):
     try:
         singer.write_schema(stream_name, schema, stream.key_properties)
     except OSError as err:
-        LOGGER.error('OS Error writing schema for: {}'.format(stream_name))
+        LOGGER.error('OS Error writing schema for: %s', stream_name)
         raise err
 
 
@@ -26,30 +26,26 @@ def write_record(stream_name, record, time_extracted):
     try:
         singer.messages.write_record(stream_name, record, time_extracted=time_extracted)
     except OSError as err:
-        LOGGER.error('OS Error writing record for: {}'.format(stream_name))
-        LOGGER.error('Stream: {}, record: {}'.format(stream_name, record))
+        LOGGER.error('OS Error writing record for: %s', stream_name)
+        LOGGER.error('Stream: %s, record: %s', stream_name, record)
         raise err
     except TypeError as err:
-        LOGGER.error('Type Error writing record for: {}'.format(stream_name))
-        LOGGER.error('Stream: {}, record: {}'.format(stream_name, record))
+        LOGGER.error('Type Error writing record for: %s', stream_name)
+        LOGGER.error('Stream: %s, record: %s', stream_name, record)
         raise err
 
 
 def get_bookmark(state, stream, default):
     if (state is None) or ('bookmarks' not in state):
         return default
-    return (
-        state
-        .get('bookmarks', {})
-        .get(stream, default)
-    )
+    return state.get('bookmarks', {}).get(stream, default)
 
 
 def write_bookmark(state, stream, value):
     if 'bookmarks' not in state:
         state['bookmarks'] = {}
     state['bookmarks'][stream] = value
-    LOGGER.info('Write state for stream: {}, value: {}'.format(stream, value))
+    LOGGER.debug('Write state for stream: %s, value: %s', stream, value)
     singer.write_state(state)
 
 
@@ -87,7 +83,7 @@ def process_records(catalog,  # pylint: disable=too-many-branches
                         schema,
                         stream_metadata)
                 except Exception as err:
-                    LOGGER.error('Transformer Error: {}'.format(err))
+                    LOGGER.error('Transformer Error: %s', err)
                     raise err
 
                 # Reset max_bookmark_value to new value if higher
@@ -130,8 +126,7 @@ def get_dates(state, stream_name, start_date, bookmark_field, bookmark_query_fie
     # Get the latest bookmark for the stream and set the last_integer/datetime
     last_datetime = get_bookmark(state, stream_name, start_date)
     max_bookmark_value = last_datetime
-    LOGGER.info('stream: {}, bookmark_field: {}, last_datetime: {}'.format(
-        stream_name, bookmark_field, last_datetime))
+    LOGGER.debug('stream: %s, bookmark_field: %s, last_datetime: %s', stream_name, bookmark_field, last_datetime)
 
     # windowing: loop through date date_window_days date windows from last_datetime to now_datetime
     now_datetime = utils.now()
@@ -147,8 +142,7 @@ def get_dates(state, stream_name, start_date, bookmark_field, bookmark_query_fie
 
         # Set end window
         end_window = start_window + timedelta(days=date_window_days)
-        if end_window > now_datetime:
-            end_window = now_datetime
+        end_window = min(end_window, now_datetime)
     else:
         start_window = strptime_to_utc(last_datetime)
         end_window = now_datetime
@@ -198,10 +192,8 @@ def sync_endpoint(
 
     # pylint: disable=too-many-nested-blocks
     while start_window < now_datetime:
-        LOGGER.info('START Sync for Stream: {}{}'.format(
-            stream_name,
-            ', Date window from: {} to {}'.format(start_window, end_window) \
-                if bookmark_query_field_from else ''))
+        LOGGER.info('START Sync for Stream: %s%s', stream_name,
+                    ', Date window from: {} to {}'.format(start_window, end_window) if bookmark_query_field_from else '')
 
         params = static_params  # adds in endpoint specific, sort, filter params
 
@@ -215,7 +207,7 @@ def sync_endpoint(
             # if we have a bookmark for the given stream, use that one
             if current_stream_bookmark_string is not None:
                 start_datetime = datetime.strptime(current_stream_bookmark_string,
-                                                                       '%Y-%m-%dT%H:%M:%S.%fZ')
+                                                   '%Y-%m-%dT%H:%M:%S.%fZ')
                 start_datetime_string = start_datetime.strftime('%Y-%m-%dT%H:%M:%SZ')
             # if don't, then take the start_date
             else:
@@ -243,16 +235,16 @@ def sync_endpoint(
             # querystring: Squash query params into string
             querystring = None
             if page == 0 and not params == {} and params is not None:
-               querystring = '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
-               # Replace <parent_id> in child stream params
-               if parent_id:
-                   querystring = querystring.replace('<parent_id>', parent_id)
+                querystring = '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
+                # Replace <parent_id> in child stream params
+                if parent_id:
+                    querystring = querystring.replace('<parent_id>', parent_id)
             else:
                 params = None
-            LOGGER.info('URL for Stream {}: {}{}'.format(
-                stream_name,
-                next_url,
-                '?{}'.format(querystring) if params else ''))
+            LOGGER.debug('URL for Stream %s: %s%s',
+                         stream_name,
+                         next_url,
+                         '?{}'.format(querystring) if params else '')
 
             # API request data
             data = client.get(
@@ -268,7 +260,8 @@ def sync_endpoint(
                 break  # No data results
 
             # Get pagination details
-            next_url = data.get('meta', {}).get('next_page_url') if endpoint_config.get("pagination") == "meta" else data.get('next_page_uri')
+            next_url = data.get('meta', {}).get('next_page_url') if endpoint_config.get(
+                "pagination") == "meta" else data.get('next_page_uri')
             if next_url and not next_url.startswith('http'):
                 next_url = '{}{}'.format(endpoint_config.get('api_url'), next_url)
 
@@ -312,8 +305,7 @@ def sync_endpoint(
                     last_datetime=last_datetime,
                     parent=parent,
                     parent_id=parent_id)
-                LOGGER.info('Stream {}, batch processed {} records'.format(
-                    stream_name, record_count))
+                LOGGER.info('Stream %s, batch processed %s records', stream_name, record_count)
             else:
                 record_count = 0
 
@@ -323,7 +315,7 @@ def sync_endpoint(
                 for child_stream_name, child_endpoint_config in children.items():
                     # will this work if only grandchildren are selected
                     if child_stream_name in selected_streams:
-                        LOGGER.info('START Syncing: {}'.format(child_stream_name))
+                        LOGGER.info('START Syncing: %s', child_stream_name)
                         write_schema(catalog, child_stream_name)
                         # For each parent record
                         for record in transformed_data:
@@ -339,8 +331,8 @@ def sync_endpoint(
 
                             # sync_endpoint for child
                             LOGGER.info(
-                                'START Sync for Stream: {}, parent_stream: {}, parent_id: {}'
-                                .format(child_stream_name, stream_name, parent_id))
+                                'START Sync for Stream: %s, parent_stream: %s, parent_id: %s', child_stream_name,
+                                stream_name, parent_id)
 
                             # If the results of the stream being synced has child streams,
                             # their endpoints will be in the results,
@@ -350,7 +342,8 @@ def sync_endpoint(
 
                             # For some resources, the name of the stream is the key for the child_paths
                             # but for others', the data_key contains the correct key
-                            child_key = child_endpoint_config.get('parent_subresource_key', child_endpoint_config.get('data_key'))
+                            child_key = child_endpoint_config.get('parent_subresource_key',
+                                                                  child_endpoint_config.get('data_key'))
 
                             child_path = child_paths.get(child_stream_name,
                                                          child_paths.get(child_key))
@@ -378,12 +371,12 @@ def sync_endpoint(
                                     account_sid=account_sid)
                             else:
                                 LOGGER.info(
-                                    'No child stream {} for parent stream {} in subresource uris'
-                                    .format(child_stream_name, stream_name))
+                                    'No child stream %s for parent stream %s in subresource uris',
+                                    child_stream_name, stream_name)
                                 child_total_records = 0
-                            LOGGER.info(
-                                'FINISHED Sync for Stream: {}, parent_id: {}, total_records: {}' \
-                                    .format(child_stream_name, parent_id, child_total_records))
+                            LOGGER.info('FINISHED Sync for Stream: %s, parent_id: %s, total_records: %s',
+                                        child_stream_name,
+                                        parent_id, child_total_records)
                             # End transformed data record loop
                         # End if child in selected streams
                     # End child streams for parent
@@ -397,16 +390,14 @@ def sync_endpoint(
                 total_records = api_total
 
             # to_rec: to record; ending record for the batch page
-            to_rec = offset + limit
-            if to_rec > total_records:
-                to_rec = total_records
+            to_rec = min(offset + limit, total_records)
 
-            LOGGER.info('Synced Stream: {}, page: {}, {} to {} of total records: {}'.format(
-                stream_name,
-                page,
-                offset,
-                to_rec,
-                total_records))
+            LOGGER.info('Synced Stream: %s, page: %s, %s to %s of total records: %s',
+                        stream_name,
+                        page,
+                        offset,
+                        to_rec,
+                        total_records)
             # Pagination: increment the offset by the limit (batch-size) and page
             offset = offset + limit
             page = page + 1
@@ -440,6 +431,7 @@ def sooner_date_time(date_time_1, date_time_2):
         return date_time_1
     return date_time_2
 
+
 # Currently syncing sets the stream currently being delivered in the state.
 # If the integration is interrupted, this state property is used to identify
 #  the starting point to continue from.
@@ -459,11 +451,11 @@ def sync(client, config, catalog, state):
     # Get selected_streams from catalog, based on state last_stream
     #   last_stream = Previous currently synced stream, if the load was interrupted
     last_stream = singer.get_currently_syncing(state)
-    LOGGER.info('last/currently syncing stream: {}'.format(last_stream))
+    LOGGER.info('last/currently syncing stream: %s', last_stream)
     selected_streams = []
     for stream in catalog.get_selected_streams(state):
         selected_streams.append(stream.stream)
-    LOGGER.info('selected_streams: {}'.format(selected_streams))
+    LOGGER.info('selected_streams: %s', selected_streams)
 
     # Get lists of parent and child streams to sync (from streams.py and catalog)
     # For children, ensure that dependent parent_stream is included
@@ -486,8 +478,8 @@ def sync(client, config, catalog, state):
             # Append un-selected parent streams of selected children
             if parent_stream not in selected_streams:
                 parent_streams.append(parent_stream)
-    LOGGER.info('Sync Parent Streams: {}'.format(parent_streams))
-    LOGGER.info('Sync Child Streams: {}'.format(child_streams))
+    LOGGER.info('Sync Parent Streams: %s', parent_streams)
+    LOGGER.info('Sync Child Streams: %s', child_streams)
 
     if not selected_streams or selected_streams == []:
         return
@@ -496,7 +488,7 @@ def sync(client, config, catalog, state):
     for stream_name, endpoint_config in STREAMS.items():
         required_streams = list(set(parent_streams + child_streams))
         if stream_name in required_streams:
-            LOGGER.info('START Syncing: {}'.format(stream_name))
+            LOGGER.info('START Syncing: %s', stream_name)
             write_schema(catalog, stream_name)
             update_currently_syncing(state, stream_name)
             path = endpoint_config.get('path', stream_name)
@@ -515,6 +507,4 @@ def sync(client, config, catalog, state):
                 date_window_days=int(config.get('date_window_days', '30')))
 
             update_currently_syncing(state, None)
-            LOGGER.info('FINISHED Syncing: {}, total_records: {}'.format(
-                stream_name,
-                total_records))
+            LOGGER.info('FINISHED Syncing: %s, total_records: %s', stream_name, total_records)

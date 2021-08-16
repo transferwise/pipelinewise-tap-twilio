@@ -62,8 +62,8 @@ def get_exception_for_status(status):
 #   "more_info": "http:\/\/www.twilio.com\/docs\/errors\/21201"
 # }
 def raise_for_error(response):
-    LOGGER.error('ERROR {}: {}, REASON: {}'.format(response.status_code,\
-        response.text, response.reason))
+    LOGGER.error('ERROR %s: %s, REASON: %s', response.status_code, response.text, response.reason)
+
     try:
         response.raise_for_status()
     except (requests.HTTPError, requests.ConnectionError) as error:
@@ -76,16 +76,16 @@ def raise_for_error(response):
             response = response.json()
             if ('status' in response) and ('message' in response):
                 status = response.get('status')
-                message = response.get('messate')
+                message = response.get('message')
                 error_code = response.get('code', 'N/A')
                 more_info = response.get('more_info', 'N/A')
                 error_message = '{}: {}, error code: {}, more info: {}, ERROR: {}'.format(
                     status, message, error_code, more_info, error)
                 ex = get_exception_for_status(status)
-                raise ex(error_message)
-            raise TwilioError(error)
-        except (ValueError, TypeError):
-            raise TwilioError(error)
+                raise ex(error_message) from ex
+            raise TwilioError(error) from error
+        except (ValueError, TypeError) as ex:
+            raise TwilioError(ex) from ex
 
 
 class TwilioClient:
@@ -117,7 +117,7 @@ class TwilioClient:
         if self.__account_sid is None or self.__auth_token is None:
             raise Exception('Error: Missing account_sid or auth_token in config.json.')
         if self.__account_sid is None:
-            raise Exception('Error: Missing account_sid in cofig.json.')
+            raise Exception('Error: Missing account_sid in config.json.')
         headers = {}
         # Endpoint: simple API call to return a single record (CompanyInformation) to test access
         # https://developer.Twilio.com/default/documentation/Rest-Adv-v8#operations-Company_Information-GetCompanyInfo
@@ -132,11 +132,10 @@ class TwilioClient:
             # Basic Authentication
             auth=(self.__account_sid, self.__auth_token))
         if response.status_code != 200:
-            LOGGER.error('Error status_code = {}'.format(response.status_code))
+            LOGGER.error('Error status_code = %s', response.status_code)
             raise_for_error(response)
-        else:
-            return True
 
+        return True
 
     @backoff.on_exception(backoff.expo,
                           (Server5xxError, ConnectionError, Server429Error),
