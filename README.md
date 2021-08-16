@@ -362,10 +362,7 @@ To set up authentication simply include your Twilio `account_sid` and `auth_toke
 1. Install
 
     ```bash
-    python3 -m venv venv
-    . venv/bin/activate
-    pip install --upgrade pip
-    pip install .
+      make venv
     ```
 
 2. Create your tap's `config.json` file. The `api_key` is available in the twilio Console UI (see **Authentication** above). The `date_window_days` is the integer number of days (between the from and to dates) for date-windowing through the date-filtered endpoints (default = 30). The `start_date` is the absolute beginning date from which incremental loading on the initial load will start.
@@ -411,17 +408,19 @@ To set up authentication simply include your Twilio `account_sid` and `auth_toke
 
 ## To run tests
 
-1. Install python test dependencies in a virtual env and run nose unit and integration tests
+Install python test dependencies in a virtual env and run tests
 ```
-  python3 -m venv venv
-  . venv/bin/activate
-  pip install --upgrade pip
-  pip install -e .[test]
+make venv test
 ```
 
-2. To run unit tests:
+## To lint the code
+
+Install python test dependencies in a virtual env and run linter
 ```
-  pytest tests/unit
+make venv pylint
 ```
 
----
+## Licence
+
+GNU AFFERO GENERAL PUBLIC [LICENSE](./LICENSE)
+
