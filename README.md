@@ -1,3 +1,10 @@
+# Notice
+To better serve Wise business and customer needs, the PipelineWise codebase needs to shrink.
+We have made the difficult decision that, going forward many components of PipelineWise will be removed or incorporated in the main repo.
+The last version before this decision is [v0.64.1](https://github.com/transferwise/pipelinewise/tree/v0.64.1)
+
+We thank all in the open-source community, that over the past 6 years, have helped to make PipelineWise a robust product for heterogeneous replication of many many Terabytes, daily
+
 # pipelinewise-tap-twilio
 
 [![PyPI version](https://badge.fury.io/py/pipelinewise-tap-twilio.svg)](https://badge.fury.io/py/pipelinewise-tap-twilio)
@@ -31,7 +38,7 @@ This tap:
   - [transcriptions](https://www.twilio.com/docs/voice/api/recording-transcription?code-sample=code-read-list-all-transcriptions&code-language=curl&code-sdk-version=json#read-multiple-transcription-resources)
   - [queues](https://www.twilio.com/docs/voice/api/queue-resource#read-multiple-queue-resources)
   - [message_media](https://www.twilio.com/docs/sms/api/media-resource#read-multiple-media-resources)
-  - [alerts](https://www.twilio.com/docs/usage/monitor-alert#read-multiple-alert-resources) 
+  - [alerts](https://www.twilio.com/docs/usage/monitor-alert#read-multiple-alert-resources)
 - Extracts TaskRouter resources:
   - [workspaces](https://www.twilio.com/docs/taskrouter/api/workspace#list-all-workspaces)
   - [activities](https://www.twilio.com/docs/taskrouter/api/activity#read-multiple-activity-resources)
@@ -50,7 +57,7 @@ This tap:
   - [members](https://www.twilio.com/docs/chat/rest/member-resource?code-sample=code-read-multiple-member-resources)
   - [chat_messages](https://www.twilio.com/docs/chat/rest/message-resource#read-multiple-message-resources)
   - [users](https://www.twilio.com/docs/chat/rest/user-resource#read-multiple-user-resources)
- 
+
 - Outputs the schema for each resource
 - Incrementally pulls data based on the input state
 
@@ -375,7 +382,7 @@ To set up authentication simply include your Twilio `account_sid` and `auth_toke
             "user_agent": "tap-twilio <api_user_email@your_company.com>",
         }
     ```
-    
+
     Optionally, also create a `state.json` file. `currently_syncing` is an optional attribute used for identifying the last object to be synced in case the job is interrupted mid-stream. The next run would begin where the last job left off.
 
     ```json
@@ -397,7 +404,7 @@ To set up authentication simply include your Twilio `account_sid` and `auth_toke
    [here](https://github.com/singer-io/getting-started/blob/master/docs/DISCOVERY_MODE.md#discovery-mode).
 
 4. Run the Tap in Sync Mode (with catalog)
- 
+
     For Sync mode:
     ```bash
     > tap-twilio --config tap_config.json --catalog catalog.json
