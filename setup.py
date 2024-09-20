@@ -23,7 +23,7 @@ setup(name='pipelinewise-tap-twilio',
       ],
       extras_require={
           'test': [
-              'pylint==2.9.*',
+              'pylint>=2.9,<3.3',
               'pytest==6.2.*'
           ]
       },
