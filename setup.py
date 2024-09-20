@@ -18,7 +18,7 @@ setup(name='pipelinewise-tap-twilio',
       ],
       py_modules=['tap_twilio'],
       install_requires=[
-          'requests==2.25.*',
+          'requests>=2.25,<2.33',
           'pipelinewise-singer-python==1.*'
       ],
       extras_require={
